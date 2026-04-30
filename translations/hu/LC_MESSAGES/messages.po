@@ -1,0 +1,503 @@
+# Hungarian translations for Prissma Studio
+# Copyright (C) 2026 Prissma Studio
+# This file is distributed under the same license as the Prissma Studio package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Prissma Studio 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-05 01:30+0300\n"
+"PO-Revision-Date: 2026-04-05 01:30+0300\n"
+"Last-Translator: AI Assistant <ai@prissma.com>\n"
+"Language-Team: Hungarian <hu@prissma.com>\n"
+"Language: hu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# Navigation
+msgid "Home"
+msgstr "Kezdőlap"
+
+msgid "About"
+msgstr "Rólunk"
+
+msgid "Gallery"
+msgstr "Galéria"
+
+msgid "Admin Panel"
+msgstr "Admin Panel"
+
+# Welcome page
+msgid "Welcome to Prissma Studio"
+msgstr "Üdvözöljük a Prissma Stúdióban"
+
+msgid "Professional Photography & Videography"
+msgstr "Professzionális Fotózás és Videózás"
+
+msgid "Discover our portfolio of stunning images and videos"
+msgstr "Fedezze fel lenyűgöző képekből és videókból álló portfóliónkat"
+
+msgid "View Gallery"
+msgstr "Galéria Megtekintése"
+
+# Gallery
+msgid "Projects"
+msgstr "Projektek"
+
+msgid "All Projects"
+msgstr "Összes Projekt"
+
+msgid "Protected Folder"
+msgstr "Védett Mappa"
+
+msgid "Enter Access Key"
+msgstr "Adja meg a hozzáférési kulcsot"
+
+msgid "Unlock"
+msgstr "Feloldás"
+
+msgid "Show Password"
+msgstr "Jelszó megjelenítése"
+
+msgid "Access Key Required"
+msgstr "Hozzáférési kulcs szükséges"
+
+msgid "This folder is protected. Please enter the access key to view its contents."
+msgstr "Ez a mappa védett. Kérjük, adja meg a hozzáférési kulcsot a tartalom megtekintéséhez."
+
+msgid "Invalid access key. Please try again."
+msgstr "Érvénytelen hozzáférési kulcs. Kérjük, próbálja újra."
+
+msgid "Select Images"
+msgstr "Képek kiválasztása"
+
+msgid "Download Selected"
+msgstr "Kiválasztottak letöltése"
+
+msgid "Zoom In"
+msgstr "Nagyítás"
+
+msgid "Zoom Out"
+msgstr "Kicsinyítés"
+
+msgid "Reset Zoom"
+msgstr "Zoom visszaállítása"
+
+msgid "Previous"
+msgstr "Előző"
+
+msgid "Next"
+msgstr "Következő"
+
+msgid "Close"
+msgstr "Bezárás"
+
+# Admin
+msgid "Admin Login"
+msgstr "Admin Bejelentkezés"
+
+msgid "Password"
+msgstr "Jelszó"
+
+msgid "Login"
+msgstr "Bejelentkezés"
+
+msgid "Dashboard"
+msgstr "Vezérlőpult"
+
+msgid "Total Files"
+msgstr "Összes fájl"
+
+msgid "Images"
+msgstr "Képek"
+
+msgid "Videos"
+msgstr "Videók"
+
+msgid "Storage Used"
+msgstr "Felhasznált tárhely"
+
+msgid "Recent Reviews"
+msgstr "Legutóbbi értékelések"
+
+msgid "All Reviews"
+msgstr "Összes értékelés"
+
+msgid "Folder Security"
+msgstr "Mappa biztonság"
+
+msgid "Upload Files"
+msgstr "Fájlok feltöltése"
+
+msgid "Logout"
+msgstr "Kijelentkezés"
+
+msgid "Protect"
+msgstr "Védelem"
+
+msgid "Unprotect"
+msgstr "Védelem megszüntetése"
+
+msgid "Regenerate Key"
+msgstr "Kulcs újragenerálása"
+
+msgid "Access Key"
+msgstr "Hozzáférési kulcs"
+
+msgid "Created"
+msgstr "Létrehozva"
+
+msgid "Regenerated"
+msgstr "Újragenerálva"
+
+# Reviews
+msgid "Leave a Review"
+msgstr "Értékelés írása"
+
+msgid "Name"
+msgstr "Név"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Rating"
+msgstr "Értékelés"
+
+msgid "Comment"
+msgstr "Megjegyzés"
+
+msgid "Submit Review"
+msgstr "Értékelés küldése"
+
+msgid "Thank you for your review!"
+msgstr "Köszönjük az értékelését!"
+
+# Footer
+msgid "© 2026 Prissma Studio. All rights reserved."
+msgstr "© 2026 Prissma Studio. Minden jog fenntartva."
+
+# Language selector
+msgid "Language"
+msgstr "Nyelv"
+
+msgid "Romanian"
+msgstr "Román"
+
+msgid "English"
+msgstr "Angol"
+
+msgid "Hungarian"
+msgstr "Magyar"
+
+# Admin titles and pages
+msgid "Admin Dashboard - Prissma Studio"
+msgstr "Admin Irányítópult - Prissma Studio"
+
+msgid "Upload - Prissma Studio"
+msgstr "Feltöltés - Prissma Studio"
+
+msgid "Admin - Recenzii Prissma"
+msgstr "Admin - Prissma Vélemények"
+
+msgid "Admin Login - Prissma Studio"
+msgstr "Admin Bejelentkezés - Prissma Studio"
+
+# Upload page
+msgid "Upload new files"
+msgstr "Új fájlok feltöltése"
+
+msgid "Folder name:"
+msgstr "Mappanév:"
+
+msgid "ex: wedding_event"
+msgstr "pl: esküvő_esemény"
+
+msgid "Click here to select files"
+msgstr "Kattintson ide a fájlok kiválasztásához"
+
+msgid "Or drag and drop files here"
+msgstr "Vagy húzza ide a fájlokat"
+
+msgid "Selected files:"
+msgstr "Kiválasztott fájlok:"
+
+msgid "Upload files"
+msgstr "Fájlok feltöltése"
+
+msgid "Back to dashboard"
+msgstr "Vissza az irányítópulthoz"
+
+# Reviews admin page
+msgid "Back to Admin"
+msgstr "Vissza az Adminhoz"
+
+msgid "Client Reviews"
+msgstr "Ügyfél Vélemények"
+
+msgid "Date"
+msgstr "Dátum"
+
+msgid "Name"
+msgstr "Név"
+
+msgid "Email / Instagram"
+msgstr "Email / Instagram"
+
+msgid "Project"
+msgstr "Projekt"
+
+msgid "Review"
+msgstr "Vélemény"
+
+# Error messages
+msgid "Incorrect access key!"
+msgstr "Helytelen hozzáférési kulcs!"
+
+msgid "The link has expired or is invalid!"
+msgstr "A link lejárt vagy érvénytelen!"
+
+# API messages
+msgid "Folder not protected"
+msgstr "Mappa nem védett"
+
+msgid "Invalid access key"
+msgstr "Érvénytelen hozzáférési kulcs"
+
+msgid "Failed to save review"
+msgstr "Vélemény mentése sikertelen"
+
+msgid "Please complete all review fields."
+msgstr "Kérjük, töltse ki az összes véleménymezőt."
+
+msgid "Review submitted successfully! Thank you."
+msgstr "Vélemény sikeresen elküldve! Köszönjük."
+
+msgid "Anonymous"
+msgstr "Névtelen"
+
+msgid "No contact info"
+msgstr "Nincs elérhetőség"
+
+msgid "Unknown Project"
+msgstr "Ismeretlen projekt"
+
+msgid "No access"
+msgstr "Nincs hozzáférés"
+
+# Page titles
+msgid "Gallery Pro - Prissma Studio"
+msgstr "Galéria Pro - Prissma Studio"
+
+msgid "About Us - Prissma Studio"
+msgstr "Rólunk - Prissma Studio"
+
+msgid "Welcome - Prissma Studio"
+msgstr "Üdvözöljük - Prissma Studio"
+
+msgid "Unlock Folder - Prissma Studio"
+msgstr "Mappa Feloldása - Prissma Studio"
+
+msgid "PRISSMA STUDIO CORE v10.0"
+msgstr "PRISSMA STUDIO CORE v10.0"
+
+# About page
+msgid "Our Story"
+msgstr "Történetünk"
+
+msgid "Prissma Studio: Art through the lens."
+msgstr "Prissma Studio: Művészet a lencsén keresztül."
+
+msgid "Founded in 2026, Prissma Studio was born from the desire to transform fleeting moments into eternal memories. Each project is approached with a unique vision, combining cutting-edge technology with a minimalist and refined aesthetic. We are a team of creatives dedicated to absolute quality, whether we talk about commercial photography, events or high-fidelity video production."
+msgstr "2026-ban alapított Prissma Studio a múló pillanatok örök emlékekké alakításának vágyából született. Minden projektet egyedi vízióval közelítünk meg, ötvözve a legmodernebb technológiát a minimalista és kifinomult esztétikával. Kreatívok csapata vagyunk, akik elkötelezettek vagyunk a abszolút minőség iránt, akár kereskedelmi fényképezésről, eseményekről vagy nagyfidelitású videóprodukcióról van szó."
+
+msgid "See Portfolio"
+msgstr "Portfólió Megtekintése"
+
+msgid "Pro Services"
+msgstr "Pro Szolgáltatások"
+
+msgid "Photography"
+msgstr "Fotózás"
+
+msgid "From studio sessions to fashion and event photography, we capture the essence of each subject."
+msgstr "Stúdió ülésektől a divat és esemény fotózásig, megragadjuk minden alany lényegét."
+
+msgid "Video Production"
+msgstr "Videó Produkció"
+
+msgid "High-definition cinematography (4K/8K) for brands and moments worth revisiting."
+msgstr "Nagyfelbontású cinematográfia (4K/8K) márkáknak és érdemes újranézni pillanatoknak."
+
+msgid "Post-Production"
+msgstr "Poszt-Produkció"
+
+msgid "Advanced editing, colorization and digital retouching for a flawless final result."
+msgstr "Fejlett szerkesztés, színezés és digitális retusálás a tökéletes végeredményért."
+
+msgid "Ready to start a project?"
+msgstr "Készen állsz egy projekt megkezdésére?"
+
+msgid "Contact us for a personalized quote or to schedule a studio visit."
+msgstr "Lépj kapcsolatba velünk személyre szabott árajánlatért vagy stúdió látogatás ütemezéséért."
+
+# Empty folder status messages
+msgid "STATUS CATALOG"
+msgstr "KATALÓGUS STÁTUSZ"
+
+msgid "HDD DISCONNECTED - DATA UNAVAILABLE"
+msgstr "HDD LEKAPCSOLVA - ADATOK NEM ELÉRHETŐK"
+
+msgid "FOLDER DOES NOT CONTAIN MEDIA FILES"
+msgstr "A MAPPA NEM TARTALMAZ MÉDIA FÁJLOKAT"
+
+msgid "RETURN TO PORTFOLIO"
+msgstr "VISSZATÉRÉS A PORTFÓLIÓHOZ"
+
+# JavaScript error messages
+msgid "Incorrect access key!"
+msgstr "Helytelen hozzáférési kulcs!"
+
+msgid "Unlock error. Please try again."
+msgstr "Feloldási hiba. Kérjük, próbálja újra."
+
+msgid "Download processing error. Check your connection."
+msgstr "Letöltési feldolgozási hiba. Ellenőrizze a kapcsolatot."
+
+# Admin folder security messages
+msgid "Folder protected! Key: "
+msgstr "Mappa védett! Kulcs: "
+
+msgid "Error protecting folder"
+msgstr "Hiba a mappa védelmében"
+
+msgid "Error: "
+msgstr "Hiba: "
+
+msgid "Folder unprotected!"
+msgstr "Mappa védtelen!"
+
+msgid "Error"
+msgstr "Hiba"
+
+msgid "Key regenerated! New key: "
+msgstr "Kulcs újragenerálva! Új kulcs: "
+
+msgid "Share link copied! 🔗"
+msgstr "Megosztási link másolva! 🔗"
+
+msgid "Could not copy"
+msgstr "Nem sikerült másolni"
+
+msgid "Key copied!"
+msgstr "Kulcs másolva!"
+
+msgid "CACHE VIEW MODE (HDD CONNECTION INTERRUPTED)"
+msgstr "GYORSÍTÓTÁR MEGJELENÍTÉSI MÓD (HDD KAPCSOLAT MEGSZAKADT)"
+
+msgid "No comment provided"
+msgstr "Nincs megjegyzés"
+
+# Help Guide
+msgid "Viewing Guide"
+msgstr "Megtekintési útmutató"
+
+msgid "Click"
+msgstr "Kattintás"
+
+msgid "Full Screen View (smart scaling)"
+msgstr "Teljes képernyős nézet (okos méretezés)"
+
+msgid "Ctrl/Cmd + Click"
+msgstr "Ctrl/Cmd + Kattintás"
+
+msgid "Quick file selection"
+msgstr "Gyors fájl kiválasztás"
+
+msgid "Arrow Keys"
+msgstr "Nyílgombok"
+
+msgid "Left/right navigation in Lightbox"
+msgstr "Balra/jobbra navigáció a Lightboxban"
+
+msgid "ESC Key"
+msgstr "ESC gomb"
+
+msgid "Quick close of active modes"
+msgstr "Az aktív módok gyors bezárása"
+
+msgid "+/- Buttons"
+msgstr "+/- Gombok"
+
+msgid "Precise control over column count"
+msgstr "Pontos vezérlés az oszlopok számára"
+
+msgid "Keyboard zoom control"
+msgstr "Billentyűzet zoom vezérlés"
+
+msgid "I understand"
+msgstr "Értem"
+
+msgid "Help"
+msgstr "Segítség"
+
+msgid "Selected"
+msgstr "KIVÁLASZTVA"
+
+msgid "Download Selection"
+msgstr "Kiválasztás letöltése"
+
+msgid "Cancel"
+msgstr "Mégsem"
+
+# Admin Folder Security
+msgid "Folder Security"
+msgstr "Mappa biztonsága"
+
+msgid "Access Key Management"
+msgstr "Hozzáférési kulcs kezelése"
+
+msgid "From this page you can protect folders with unique access keys. Users will need to enter the key to access the folder."
+msgstr "Erről az oldalról az eszközökkel vedö mappákat vesz ények hozzáférési szrészesedésbe. A felhasználóknak meg kell adniuk a kulcsot a mappa eléréséhez."
+
+msgid "PROTECTED"
+msgstr "VÉDETT"
+
+msgid "UNPROTECTED"
+msgstr "VÉDELEM NÉLKÜLI"
+
+msgid "Copy"
+msgstr "Másolás"
+
+msgid "Share Link (Direct):"
+msgstr "Meg osztás hivatkozás (Közvetlen):"
+
+msgid "Copy Link"
+msgstr "Link másolása"
+
+msgid "Created:"
+msgstr "Létrehozva:"
+
+msgid "Protect"
+msgstr "Védés"
+
+msgid "Regenerate"
+msgstr "Kulcs újragenerálása"
+
+msgid "Unprotect"
+msgstr "Védelem feloldása"
+
+msgid "No folders available for protection."
+msgstr "Nincsenek elérhető mappák védelemhez."
+
+msgid "Processing..."
+msgstr "Feldolgozás..."
+
+msgid "Are you sure you want to unprotect this folder?"
+msgstr "Biztos, hogy szeretné feloldani a védelmet ebből a mappából?"
+
+msgid "This will invalidate the old key! Continue?"
+msgstr "Ez érvényteleníté az érékes kulcsot! Folytatódjon?"
+
+msgid "Regenerating..."
+msgstr "Kulcs újragenerálása..."

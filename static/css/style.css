@@ -1,0 +1,758 @@
+/* ================================================
+   STYLE.CSS - VERSIUNE MODULARÄ‚ & AERISITÄ‚
+   ================================================ */
+
+/* 1. RESET & VARIABILE GLOBALE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+:root {
+    --bg: #050506;
+    --txt: #ffffff;
+    --acc: #4285f4;
+    --header-h: 105px;
+    --radius: 12px;
+    --glass: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(255, 255, 255, 0.15);
+}
+
+/* 2. BODY & BACKGROUND GENERAL */
+body {
+    color: var(--txt);
+    min-height: 100vh;
+}
+
+/* Glass Effect */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* 3. HEADER */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    
+    /* Efectul de sticlă întunecată (Dark Glass) */
+    background: rgba(5, 5, 8, 0.85); 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* 4. ELEMENTE DIN HEADER */
+.h-left, .h-right, nav { 
+    display: flex !important; 
+    align-items: center; 
+    gap: 15px; 
+}
+.logo-img { 
+    height: 85px !important; 
+    width: auto !important; 
+    display: block; 
+    transition: 0.3s; 
+}
+
+/* 5. BUTOANE GENERALE (nav, drop, view) */
+.view-btn, .nav-link, .drop-btn {
+    background: var(--glass) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    padding: clamp(5px, 0.8vw, 8px) clamp(8px, 1.5vw, 14px);
+    border-radius: var(--radius);
+    cursor: pointer;
+    border: 1px solid var(--glass-border) !important;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    font-size: clamp(9px, 1.2vw, 11px);
+    transition: 0.3s;
+    white-space: nowrap;
+}
+.view-btn.active, .nav-link.active {
+    background: var(--acc) !important;
+    color: #fff !important;
+}
+
+/* 6. VIEW CONTROLS (Grid / List) */
+.view-controls {
+    display: flex !important;
+    gap: 4px;
+    background: rgba(255,255,255,0.05);
+    padding: 4px;
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+}
+.view-controls .view-btn {
+    border: none !important;
+    background: transparent !important;
+    padding: 6px 10px !important;
+}
+
+/* 7. DROPDOWNURI (Dark Glass Edition) */
+.dropdown { position: relative; display: inline-block; }
+
+.drop-content {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    
+    /* Efectul de sticlă întunecată */
+    background: rgba(5, 5, 8, 0.85); 
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.15); /* Margine vizibilă pentru contrast */
+    z-index: 10000;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8); /* Umbră puternică pentru adâncime */
+    min-width: 220px;
+}
+
+.dropdown:hover .drop-content {
+    display: block;
+    animation: dropFadeIn 0.25s ease-out forwards;
+}
+
+@keyframes dropFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.drop-content a {
+    color: #ccc;
+    padding: clamp(8px, 1.2vw, 12px) clamp(12px, 2vw, 18px);
+    display: block;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-size: clamp(9px, 1.2vw, 11px);
+    white-space: nowrap;
+}
+
+/* Hover-ul pe link-uri făcut semi-transparent ca să păstreze estetica de sticlă */
+.drop-content a:hover { 
+    background: rgba(66, 133, 244, 0.2); /* Albastrul de accent, dar transparent 20% */
+    color: white; 
+}
+
+/* 8. POZIȚIONARE DROPDOWNURI */
+.dropdown-proiecte .drop-content,
+.dropdown-sortare .drop-content {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+}
+
+.dropdown-admin .drop-content {
+    right: 5px !important;
+    left: auto !important;
+    min-width: 290px !important;
+}
+
+/* ================================================
+   GALLERY & CARDS
+   ================================================ */
+.gallery-grid {
+    display: block;
+    column-count: 4;
+    column-gap: 25px;
+    padding: 30px;
+    position: relative;
+    min-height: 50vh;
+}
+
+/* Card de bazÄƒ */
+.card {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 25px;
+    background: var(--glass);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    position: relative;
+    transition: 0.3s;
+}
+.card img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Hover - dubluri pÄƒstrate intenÈ›ionat */
+.card {
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.card:hover {
+    transform: translateY(-8px);
+    border-color: var(--acc);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 15px rgba(66,133,244,0.3);
+    z-index: 10;
+}
+.card:hover img {
+    transform: scale(1.08);
+    filter: brightness(1.1);
+}
+
+/* SelecÈ›ie */
+.card.selected {
+    outline: 4px solid var(--acc);
+    outline-offset: -4px;
+}
+.card.selected::after {
+    content: 'âœ“';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--acc);
+    color: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* ================================================
+   LIST VIEW
+   ================================================ */
+.gallery-grid.list-view {
+    display: flex !important;
+    flex-direction: column !important;
+    column-count: 1 !important;
+    max-width: 1000px;
+    margin: 0 auto;
+    gap: 15px;
+}
+.gallery-grid.list-view .card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    height: 100px;
+    padding: 10px;
+    margin-bottom: 0;
+}
+.gallery-grid.list-view .card img {
+    width: 120px !important;
+    height: 80px !important;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+/* List View - info text */
+.gallery-grid.list-view .card-info-list {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    flex: 1;
+    padding-left: 25px;
+}
+.gallery-grid.list-view .list-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 35ch;
+}
+.gallery-grid.list-view .list-meta {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.7);
+}
+
+/* ================================================
+   SELECÈšIE (nu am atins logica JS)
+   ================================================ */
+#btn-start-select { display: flex !important; }
+#selection-bar { display: none !important; }
+body.selection-active #btn-start-select { display: none !important; }
+body.selection-active #selection-bar { display: flex !important; }
+
+#selection-bar {
+    background: rgba(255,255,255,0.12) !important;
+    backdrop-filter: blur(28px) !important;
+    border: 1px solid rgba(255,255,255,0.28) !important;
+    border-radius: 50px !important;
+    padding: 6px 12px !important;
+    gap: 8px !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.35) !important;
+}
+
+/* ================================================
+   FIX GRID - DOAR POZE (fÄƒrÄƒ text)
+   ================================================ */
+.card-info-list { display: none !important; }
+.gallery-grid:not(.list-view) .card-info-list { display: none !important; }
+
+/* ================================================
+   ELEMENTE AUXILIARE (easter egg, video, etc.)
+   ================================================ */
+.corrupted-sd-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; font-family: 'Quicksand', 'Comic Sans MS', cursive; }
+.sd-card { width: 130px; height: 175px; background: #1e1e20; border-radius: 10px 40px 10px 10px; border: 3px solid #333; position: relative; animation: glitch 3.5s infinite; box-shadow: 0 15px 45px rgba(0,0,0,0.6); }
+.sd-label { position: absolute; inset: 20px; background: #222; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid #444; }
+.sd-brand { color: var(--acc); font-weight: 900; font-size: 0.9rem; letter-spacing: 1px; }
+.sd-warning { margin-top: 25px; color: #ff4d4d; font-family: monospace; font-weight: bold; background: rgba(255, 77, 77, 0.1); padding: 5px 10px; border-radius: 5px; }
+.error-text h2 { font-size: 3rem; color: #ff4d4d; margin-top: 20px; font-weight: 800; }
+.error-text p { opacity: 0.8; font-size: 1.1rem; color: #eee; max-width: 450px; margin: 10px auto; }
+.blink-btn { display: inline-block; margin-top: 25px; padding: clamp(5px, 0.8vw, 9px) clamp(10px, 2vw, 18px); background: rgba(66, 133, 244, 0.1); border: 1px solid var(--acc); color: var(--acc); border-radius: 50px; font-weight: bold; text-transform: uppercase; cursor: pointer; font-size: clamp(9px, 1.3vw, 11px); white-space: nowrap; animation: blink-anim 1.2s step-end infinite; }
+.status-dot { width: 10px; height: 10px; background: #2ecc71; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 8px #2ecc71; }
+@keyframes glitch { 0%, 100% { transform: translate(0,0); } 1% { transform: translate(2px,-2px); } 2% { transform: translate(-2px,2px); } }
+@keyframes blink-anim { 50% { opacity: 0.3; } }
+.video-card { position: relative; }
+.play-overlay {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.6); color: white; width: 60px; height: 60px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 28px; opacity: 0.9; pointer-events: none; transition: 0.3s;
+}
+.card:hover .play-overlay { transform: translate(-50%, -50%) scale(1.15); }
+
+@media (max-width: 768px) { .gallery-grid { column-count: 2 !important; } }
+@media (max-width: 480px) { .gallery-grid { column-count: 1 !important; } }
+
+/* ================================================
+   EMPTY GALLERY
+   ================================================ */
+.empty-gallery {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+}
+
+.empty-content {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 500px;
+    margin: 0 auto;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.empty-content h2 {
+    color: var(--txt);
+    margin: 20px 0 10px;
+}
+
+.empty-content p {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 30px;
+}
+
+.btn-secondary {
+    display: inline-block;
+    padding: clamp(7px, 1.2vw, 11px) clamp(12px, 2vw, 22px);
+    background: rgba(66, 133, 244, 0.1);
+    border: 1px solid rgba(66, 133, 244, 0.3);
+    color: var(--acc);
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: clamp(9px, 1.3vw, 12px);
+    transition: 0.3s;
+    white-space: nowrap;
+}
+
+.btn-secondary:hover {
+    background: rgba(66, 133, 244, 0.2);
+    border-color: var(--acc);
+}
+
+/* ================================================
+   LOADING OVERLAY - ANIMAÈšIE CSS (frumoasÄƒ + vizibilÄƒ)
+   ================================================ */
+#loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 5, 6, 0.95);
+    backdrop-filter: blur(20px);
+    z-index: 99999;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.loader-spinner-new {
+    width: 72px;
+    height: 72px;
+    border: 7px solid rgba(255, 255, 255, 0.15);
+    border-top: 7px solid #4285f4;
+    border-radius: 50%;
+    animation: loading-spin 0.9s linear infinite;
+}
+
+#loading-text {
+    font-size: 1.15rem;
+    letter-spacing: 4px;
+    color: #4285f4;
+    text-transform: uppercase;
+    font-weight: 700;
+    animation: loading-pulse 1.6s infinite ease-in-out;
+}
+
+@keyframes loading-spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes loading-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+}
+/* ================================================
+   STYLE.CSS - VERSIUNE MODULARĂ & AERISITĂ
+   ================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+/* 1. RESET & VARIABILE GLOBALE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+    :root {
+        --grid-size: 110px; /* Variabilă controlată de algoritm */
+        --grid-gap: 15px;
+    }
+
+    .gallery-grid {
+        display: grid !important;
+        /* Folosim variabila pentru a scala tot grid-ul deodată */
+        grid-template-columns: repeat(auto-fill, minmax(var(--grid-size), 1fr));
+        grid-auto-rows: var(--grid-size);
+        gap: var(--grid-gap);
+        grid-auto-flow: dense;
+        width: 100%;
+        justify-content: center;
+        padding: 20px;
+        transition: all 0.3s ease; /* Tranziție fină la scalare */
+    }
+
+    /* Cardurile rămân la fel, dar profită de noul grid-size */
+    .gallery-grid .card {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+    }
+
+/* =========================================
+   UI SELECȚIE POZE (Checkmark & Efecte)
+   ========================================= */
+
+/* Asigură-te că pozele au position relative pentru ca iconița să stea peste ele */
+.card {
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+/* Când poza e selectată, adăugăm un checkmark SVG curat în colțul din dreapta sus */
+.card.selected::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 26px;
+    height: 26px;
+    background-color: var(--acc, #4285f4); /* Culoarea albastră */
+    border-radius: 50%;
+    /* Aici este iconița SVG transformată în cod de fundal */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>');
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    z-index: 10;
+    animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Efect vizual pe poză când e selectată (se micșorează un pic) */
+.card.selected img, 
+.card.selected video {
+    transform: scale(0.92);
+    opacity: 0.7;
+    border-radius: 12px;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+
+/* =========================================
+   UI SELECȚIE POZE (Checkmark & Efecte)
+   ========================================= */
+.card {
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.card.selected::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 26px;
+    height: 26px;
+    background-color: var(--acc, #4285f4);
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>');
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 2px solid white;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    z-index: 10;
+    animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card.selected img, 
+.card.selected video {
+    transform: scale(0.92);
+    opacity: 0.7;
+    border-radius: 12px;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+
+/* =========================================
+   MENIUL PLUTITOR DE SELECȚIE (Dark Glass)
+   ========================================= */
+.selection-bar {
+    position: fixed;
+    bottom: -100px; /* Ascuns la început */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(5, 5, 8, 0.98); 
+    backdrop-filter: blur(20px); 
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.25); 
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.5); 
+    padding: 15px 25px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 9999; 
+    transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ⚠️ ACEASTA ESTE REGULA CARE ÎL FACE SĂ APARĂ PE ECRAN ⚠️ */
+body.selection-active .selection-bar {
+    bottom: 30px; 
+}
+
+.selection-bar .sel-info {
+    color: white;
+    font-weight: 500;
+}
+
+.selection-bar button {
+    background: rgba(255, 0, 0, 0.1);
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: clamp(4px, 0.8vw, 7px) clamp(8px, 1.5vw, 16px);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: clamp(9px, 1.2vw, 12px);
+    white-space: nowrap;
+}
+
+.selection-bar button:hover {
+    background: rgba(0, 0, 0, 0.497);
+}
+
+.selection-bar .btn-download {
+    background: var(--acc, #4285f4);
+    font-weight: bold;
+}
+
+.selection-bar .btn-download:hover {
+    background: #3367d6;
+}
+
+:root {
+    --grid-size: 220px;
+    --grid-gap: 15px;
+    --acc: #4285f4;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#050506; color:#fff; font-family:'Poppins',sans-serif; min-height:100vh; }
+
+header {
+    height: 100px;
+    background: rgba(5,5,8,0.85);
+    backdrop-filter: blur(30px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    position: sticky; top:0; z-index:9999;
+    display:flex; align-items:center; padding:0 40px; gap:25px;
+}
+
+/* BANNER HDD OFFLINE */
+.offline-banner {
+    background: rgba(255, 107, 107, 0.15);
+    border: 1px solid rgba(255,107,107,0.4);
+    color: #ff6b6b;
+    padding: 6px 18px;
+    border-radius: 9999px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    animation: pulse 2s infinite;
+}
+@keyframes pulse { 50% { opacity: 0.7; } }
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--grid-size), 1fr));
+    grid-auto-rows: var(--grid-size);
+    gap: var(--grid-gap);
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.02);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    aspect-ratio: 16/9;
+}
+.card.portrait { aspect-ratio: 9/16; }
+.card img, .card video { width:100%; height:100%; object-fit:cover; display:block; }
+
+.card.selected {
+    transform: scale(0.94);
+    outline: 4px solid var(--acc);
+    outline-offset: -4px;
+}
+.card.selected::after {
+    content:'✓';
+    position:absolute; top:12px; right:12px;
+    background:var(--acc); color:white;
+    width:28px; height:28px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:16px; z-index:10;
+}
+
+.gallery-grid.list-view {
+    display:flex !important; flex-direction:column; max-width:1000px; margin:0 auto; gap:12px;
+}
+.gallery-grid.list-view .card { display:flex; height:110px; padding:8px; aspect-ratio:auto; }
+.gallery-grid.list-view .card img { width:140px !important; height:94px !important; border-radius:8px; margin-right:20px; }
+
+/* Restul stilurilor tale originale (header-capsule, selection-bar etc.) rămân neschimbate */
+
+/* =================================================
+   HEADER GLOBAL - ASPECT UNIFORM (100px, FIXED)
+   ================================================= */
+header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 40px !important;
+    height: 100px !important;
+    min-height: 100px !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    z-index: 9999 !important;
+    background: rgba(25, 25, 30, 0.4) !important;
+    backdrop-filter: blur(30px) saturate(210%) brightness(110%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(210%) brightness(110%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Compensație pentru conținut, să nu intre sub header */
+main, .hero, .dashboard-container, .upload-container, .login-container {
+    margin-top: 100px !important;
+}
+
+/* Stil Dropdown Proiecte */
+.dropdown { position: relative; display: inline-block; }
+.drop-content {
+    display: none; position: absolute; top: 100%; left: 0;
+    background: rgba(20, 20, 25, 0.98); min-width: 180px;
+    border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
+    z-index: 1000; margin-top: 10px; padding: 10px 0;
+}
+.dropdown:hover .drop-content { display: block; }
+.drop-content a {
+    color: white !important; padding: 10px 20px; text-decoration: none !important;
+    display: block; font-size: 13px; transition: 0.2s;
+}
+.drop-content a:hover { background: rgba(255, 255, 255, 0.05); color: #4285f4 !important; }
+
+/* Butoane tip Capsulă */
+.header-capsule {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    padding: 0 16px;
+    gap: 8px; /* SPAȚIERE ADAUGATĂ AICI PENTRU A DESPĂRȚI ELEMENTELE */
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    text-decoration: none;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.25s;
+    white-space: nowrap;
+}
+
+/* ADAUGĂ ȘI ACEST BLOC IMEDIAT DEDESUBT PENTRU A FIXA MĂRIMEA ICONIȚELOR SVG */
+.header-capsule svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}

@@ -1,0 +1,503 @@
+# Romanian translations for Prissma Studio
+# Copyright (C) 2026 Prissma Studio
+# This file is distributed under the same license as the Prissma Studio package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Prissma Studio 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-05 01:30+0300\n"
+"PO-Revision-Date: 2026-04-05 01:30+0300\n"
+"Last-Translator: AI Assistant <ai@prissma.com>\n"
+"Language-Team: Romanian <ro@prissma.com>\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# Navigation
+msgid "Home"
+msgstr "Acasă"
+
+msgid "About"
+msgstr "Despre"
+
+msgid "Gallery"
+msgstr "Galerie"
+
+msgid "Admin Panel"
+msgstr "Panou Admin"
+
+# Welcome page
+msgid "Welcome to Prissma Studio"
+msgstr "Bine ați venit la Prissma Studio"
+
+msgid "Professional Photography & Videography"
+msgstr "Fotografie și Videografie Profesională"
+
+msgid "Discover our portfolio of stunning images and videos"
+msgstr "Descoperiți portofoliul nostru de imagini și videoclipuri uimitoare"
+
+msgid "View Gallery"
+msgstr "Vezi Galerie"
+
+# Gallery
+msgid "Projects"
+msgstr "Proiecte"
+
+msgid "All Projects"
+msgstr "Toate Proiectele"
+
+msgid "Protected Folder"
+msgstr "Folder Protejat"
+
+msgid "Enter Access Key"
+msgstr "Introdu Cheia de Acces"
+
+msgid "Unlock"
+msgstr "Deblochează"
+
+msgid "Show Password"
+msgstr "Arată Parola"
+
+msgid "Access Key Required"
+msgstr "Cheie de Acces Necesară"
+
+msgid "This folder is protected. Please enter the access key to view its contents."
+msgstr "Acest folder este protejat. Vă rugăm să introduceți cheia de acces pentru a vedea conținutul."
+
+msgid "Invalid access key. Please try again."
+msgstr "Cheie de acces invalidă. Vă rugăm să încercați din nou."
+
+msgid "Select Images"
+msgstr "Selectează Imagini"
+
+msgid "Download Selected"
+msgstr "Descarcă Selecția"
+
+msgid "Zoom In"
+msgstr "Mărire"
+
+msgid "Zoom Out"
+msgstr "Micșorare"
+
+msgid "Reset Zoom"
+msgstr "Reset Zoom"
+
+msgid "Previous"
+msgstr "Anterior"
+
+msgid "Next"
+msgstr "Următor"
+
+msgid "Close"
+msgstr "Închide"
+
+# Admin
+msgid "Admin Login"
+msgstr "Login Admin"
+
+msgid "Password"
+msgstr "Parolă"
+
+msgid "Login"
+msgstr "Conectare"
+
+msgid "Dashboard"
+msgstr "Panou de Control"
+
+msgid "Total Files"
+msgstr "Total Fișiere"
+
+msgid "Images"
+msgstr "Imagini"
+
+msgid "Videos"
+msgstr "Videoclipuri"
+
+msgid "Storage Used"
+msgstr "Spațiu Utilizat"
+
+msgid "Recent Reviews"
+msgstr "Recenzii Recente"
+
+msgid "All Reviews"
+msgstr "Toate Recenziile"
+
+msgid "Folder Security"
+msgstr "Securitate Foldere"
+
+msgid "Upload Files"
+msgstr "Încarcă Fișiere"
+
+msgid "Logout"
+msgstr "Deconectare"
+
+msgid "Protect"
+msgstr "Protejează"
+
+msgid "Unprotect"
+msgstr "Deprotejează"
+
+msgid "Regenerate Key"
+msgstr "Regenerează Cheie"
+
+msgid "Access Key"
+msgstr "Cheie de Acces"
+
+msgid "Created"
+msgstr "Creat"
+
+msgid "Regenerated"
+msgstr "Regenerat"
+
+# Reviews
+msgid "Leave a Review"
+msgstr "Lasă o Recenzie"
+
+msgid "Name"
+msgstr "Nume"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Rating"
+msgstr "Evaluare"
+
+msgid "Comment"
+msgstr "Comentariu"
+
+msgid "Submit Review"
+msgstr "Trimite Recenzie"
+
+msgid "Thank you for your review!"
+msgstr "Vă mulțumim pentru recenzie!"
+
+# Footer
+msgid "© 2026 Prissma Studio. All rights reserved."
+msgstr "© 2026 Prissma Studio. Toate drepturile rezervate."
+
+# Language selector
+msgid "Language"
+msgstr "Limbă"
+
+msgid "Romanian"
+msgstr "Română"
+
+msgid "English"
+msgstr "Engleză"
+
+msgid "Hungarian"
+msgstr "Maghiară"
+
+# Admin titles and pages
+msgid "Admin Dashboard - Prissma Studio"
+msgstr "Panou Admin - Prissma Studio"
+
+msgid "Upload - Prissma Studio"
+msgstr "Încărcare - Prissma Studio"
+
+msgid "Admin - Recenzii Prissma"
+msgstr "Admin - Recenzii Prissma"
+
+msgid "Admin Login - Prissma Studio"
+msgstr "Login Admin - Prissma Studio"
+
+# Upload page
+msgid "Upload new files"
+msgstr "Încarcă fișiere noi"
+
+msgid "Folder name:"
+msgstr "Nume folder:"
+
+msgid "ex: wedding_event"
+msgstr "ex: eveniment_nunta"
+
+msgid "Click here to select files"
+msgstr "Clic aici pentru a selecta fișiere"
+
+msgid "Or drag and drop files here"
+msgstr "Sau trage și lasă fișierele aici"
+
+msgid "Selected files:"
+msgstr "Fișiere selectate:"
+
+msgid "Upload files"
+msgstr "Încarcă fișierele"
+
+msgid "Back to dashboard"
+msgstr "Înapoi la dashboard"
+
+# Reviews admin page
+msgid "Back to Admin"
+msgstr "Înapoi la Admin"
+
+msgid "Client Reviews"
+msgstr "Recenzii Clienți"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Name"
+msgstr "Nume"
+
+msgid "Email / Instagram"
+msgstr "Email / Instagram"
+
+msgid "Project"
+msgstr "Proiect"
+
+msgid "Review"
+msgstr "Recenzie"
+
+# Error messages
+msgid "Incorrect access key!"
+msgstr "Cheie de acces incorectă!"
+
+msgid "The link has expired or is invalid!"
+msgstr "Link-ul a expirat sau este invalid!"
+
+# API messages
+msgid "Folder not protected"
+msgstr "Folder neprotejat"
+
+msgid "Invalid access key"
+msgstr "Cheie de acces invalidă"
+
+msgid "Failed to save review"
+msgstr "Eșec la salvarea recenziei"
+
+msgid "Please complete all review fields."
+msgstr "Completează, te rog, toate câmpurile recenziei."
+
+msgid "Review submitted successfully! Thank you."
+msgstr "Recenzie trimisă cu succes! Mulțumim."
+
+msgid "Anonymous"
+msgstr "Anonymous"
+
+msgid "No contact info"
+msgstr "Fără informații de contact"
+
+msgid "Unknown Project"
+msgstr "Proiect necunoscut"
+
+msgid "No access"
+msgstr "Fără acces"
+
+# Page titles
+msgid "Gallery Pro - Prissma Studio"
+msgstr "Galerie Pro - Prissma Studio"
+
+msgid "About Us - Prissma Studio"
+msgstr "Despre Noi - Prissma Studio"
+
+msgid "Welcome - Prissma Studio"
+msgstr "Bun Venit - Prissma Studio"
+
+msgid "Unlock Folder - Prissma Studio"
+msgstr "Deblochează Folder - Prissma Studio"
+
+msgid "PRISSMA STUDIO CORE v10.0"
+msgstr "PRISSMA STUDIO CORE v10.0"
+
+# About page
+msgid "Our Story"
+msgstr "Povestea Noastră"
+
+msgid "Prissma Studio: Art through the lens."
+msgstr "Prissma Studio: Arta prin obiectiv."
+
+msgid "Founded in 2026, Prissma Studio was born from the desire to transform fleeting moments into eternal memories. Each project is approached with a unique vision, combining cutting-edge technology with a minimalist and refined aesthetic. We are a team of creatives dedicated to absolute quality, whether we talk about commercial photography, events or high-fidelity video production."
+msgstr "Fondat în 2026, Prissma Studio s-a născut din dorința de a transforma momentele efemere în amintiri eterne. Fiecare proiect este abordat cu o viziune unică, îmbinând tehnologia de ultimă oră cu o estetică minimalistă și rafinată. Suntem o echipă de creativi dedicați calității absolute, fie că vorbim despre fotografie comercială, evenimente sau producție video de înaltă fidelitate."
+
+msgid "See Portfolio"
+msgstr "Vezi Portofoliul"
+
+msgid "Pro Services"
+msgstr "Servicii Pro"
+
+msgid "Photography"
+msgstr "Fotografie"
+
+msgid "From studio sessions to fashion and event photography, we capture the essence of each subject."
+msgstr "De la ședințe de studio la fotografie de modă și eveniment, capturăm esența fiecărui subiect."
+
+msgid "Video Production"
+msgstr "Producție Video"
+
+msgid "High-definition cinematography (4K/8K) for brands and moments worth revisiting."
+msgstr "Cinematografie de înaltă definiție (4K/8K) pentru branduri și momente care merită revăzute."
+
+msgid "Post-Production"
+msgstr "Post-Producție"
+
+msgid "Advanced editing, colorization and digital retouching for a flawless final result."
+msgstr "Editare avansată, colorizare și retușare digitală pentru un rezultat final impecabil."
+
+msgid "Ready to start a project?"
+msgstr "Ești gata să începem un proiect?"
+
+msgid "Contact us for a personalized quote or to schedule a studio visit."
+msgstr "Contactează-ne pentru o ofertă personalizată sau pentru a programa o vizită la studio."
+
+# Empty folder status messages
+msgid "STATUS CATALOG"
+msgstr "STATUS CATALOG"
+
+msgid "HDD DISCONNECTED - DATA UNAVAILABLE"
+msgstr "HDD DECONECTAT - DATE INDISPONIBILE"
+
+msgid "FOLDER DOES NOT CONTAIN MEDIA FILES"
+msgstr "FOLDERUL NU CONȚINE FIȘIERE MEDIA"
+
+msgid "RETURN TO PORTFOLIO"
+msgstr "REVENIRE LA PORTOFOLIU"
+
+# JavaScript error messages
+msgid "Incorrect access key!"
+msgstr "Cheie de acces incorectă!"
+
+msgid "Unlock error. Please try again."
+msgstr "Eroare la deblocare. Încearcă din nou."
+
+msgid "Download processing error. Check your connection."
+msgstr "Eroare la procesarea descărcării. Verifică conexiunea."
+
+# Admin folder security messages
+msgid "Folder protected! Key: "
+msgstr "Folder protejat! Cheie: "
+
+msgid "Error protecting folder"
+msgstr "Eroare la protejarea folderului"
+
+msgid "Error: "
+msgstr "Eroare: "
+
+msgid "Folder unprotected!"
+msgstr "Folder deprotejat!"
+
+msgid "Error"
+msgstr "Eroare"
+
+msgid "Key regenerated! New key: "
+msgstr "Cheie regenerata! Noua cheie: "
+
+msgid "Share link copied! 🔗"
+msgstr "Link share copiat! 🔗"
+
+msgid "Could not copy"
+msgstr "Nu am putut copia"
+
+msgid "Key copied!"
+msgstr "Cheie copiata!"
+
+msgid "CACHE VIEW MODE (HDD CONNECTION INTERRUPTED)"
+msgstr "MOD VIZUALIZARE CACHE (CONEXIUNE HDD ÎNTRERUPTĂ)"
+
+msgid "No comment provided"
+msgstr "Fără comentariu"
+
+# Help Guide
+msgid "Viewing Guide"
+msgstr "Ghid Vizualizare"
+
+msgid "Click"
+msgstr "Click"
+
+msgid "Full Screen View (smart scaling)"
+msgstr "Vizualizare Full Screen (scalare inteligentă)"
+
+msgid "Ctrl/Cmd + Click"
+msgstr "Ctrl/Cmd + Click"
+
+msgid "Quick file selection"
+msgstr "Selecție rapidă a fișierelor"
+
+msgid "Arrow Keys"
+msgstr "Săgeți Tastatură"
+
+msgid "Left/right navigation in Lightbox"
+msgstr "Navigare stânga/dreapta în Lightbox"
+
+msgid "ESC Key"
+msgstr "Tasta ESC"
+
+msgid "Quick close of active modes"
+msgstr "Închidere rapidă a modurilor active"
+
+msgid "+/- Buttons"
+msgstr "Butoane + / -"
+
+msgid "Precise control over column count"
+msgstr "Control precis asupra numărului de coloane"
+
+msgid "Keyboard zoom control"
+msgstr "Control zoom prin taste"
+
+msgid "I understand"
+msgstr "Am înțeles"
+
+msgid "Help"
+msgstr "Ajutor"
+
+msgid "Selected"
+msgstr "SELECTATE"
+
+msgid "Download Selection"
+msgstr "Descarcă Selecția"
+
+msgid "Cancel"
+msgstr "Anulează"
+
+# Admin Folder Security
+msgid "Folder Security"
+msgstr "Securizare Foldere"
+
+msgid "Access Key Management"
+msgstr "Gestionare Chei de Acces"
+
+msgid "From this page you can protect folders with unique access keys. Users will need to enter the key to access the folder."
+msgstr "Din pagina aceasta poti proteja foldere cu chei de acces unice. Utilizatorii vor trebui sa introduca cheia pentru a accesa folderul."
+
+msgid "PROTECTED"
+msgstr "PROTEJAT"
+
+msgid "UNPROTECTED"
+msgstr "NEPROTEJAT"
+
+msgid "Copy"
+msgstr "Copie"
+
+msgid "Share Link (Direct):"
+msgstr "Link Share (Direct):"
+
+msgid "Copy Link"
+msgstr "Copie Link"
+
+msgid "Created:"
+msgstr "Creat:"
+
+msgid "Protect"
+msgstr "Protejeaza"
+
+msgid "Regenerate"
+msgstr "Regenereaza"
+
+msgid "Unprotect"
+msgstr "Deprotejeaza"
+
+msgid "No folders available for protection."
+msgstr "Nu exista foldere disponibile pentru securizare."
+
+msgid "Processing..."
+msgstr "Se proceseaza..."
+
+msgid "Are you sure you want to unprotect this folder?"
+msgstr "Sigur vrei sa deprotejeai acest folder?"
+
+msgid "This will invalidate the old key! Continue?"
+msgstr "Aceasta va invalida cheia veche! Continui?"
+
+msgid "Regenerating..."
+msgstr "Se regenereaza..."

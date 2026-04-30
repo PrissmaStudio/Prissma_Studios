@@ -1,0 +1,503 @@
+# English translations for Prissma Studio
+# Copyright (C) 2026 Prissma Studio
+# This file is distributed under the same license as the Prissma Studio package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Prissma Studio 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-05 01:30+0300\n"
+"PO-Revision-Date: 2026-04-05 01:30+0300\n"
+"Last-Translator: AI Assistant <ai@prissma.com>\n"
+"Language-Team: English <en@prissma.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# Navigation
+msgid "Home"
+msgstr "Home"
+
+msgid "About"
+msgstr "About"
+
+msgid "Gallery"
+msgstr "Gallery"
+
+msgid "Admin Panel"
+msgstr "Admin Panel"
+
+# Welcome page
+msgid "Welcome to Prissma Studio"
+msgstr "Welcome to Prissma Studio"
+
+msgid "Professional Photography & Videography"
+msgstr "Professional Photography & Videography"
+
+msgid "Discover our portfolio of stunning images and videos"
+msgstr "Discover our portfolio of stunning images and videos"
+
+msgid "View Gallery"
+msgstr "View Gallery"
+
+# Gallery
+msgid "Projects"
+msgstr "Projects"
+
+msgid "All Projects"
+msgstr "All Projects"
+
+msgid "Protected Folder"
+msgstr "Protected Folder"
+
+msgid "Enter Access Key"
+msgstr "Enter Access Key"
+
+msgid "Unlock"
+msgstr "Unlock"
+
+msgid "Show Password"
+msgstr "Show Password"
+
+msgid "Access Key Required"
+msgstr "Access Key Required"
+
+msgid "This folder is protected. Please enter the access key to view its contents."
+msgstr "This folder is protected. Please enter the access key to view its contents."
+
+msgid "Invalid access key. Please try again."
+msgstr "Invalid access key. Please try again."
+
+msgid "Select Images"
+msgstr "Select Images"
+
+msgid "Download Selected"
+msgstr "Download Selected"
+
+msgid "Zoom In"
+msgstr "Zoom In"
+
+msgid "Zoom Out"
+msgstr "Zoom Out"
+
+msgid "Reset Zoom"
+msgstr "Reset Zoom"
+
+msgid "Previous"
+msgstr "Previous"
+
+msgid "Next"
+msgstr "Next"
+
+msgid "Close"
+msgstr "Close"
+
+# Admin
+msgid "Admin Login"
+msgstr "Admin Login"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Total Files"
+msgstr "Total Files"
+
+msgid "Images"
+msgstr "Images"
+
+msgid "Videos"
+msgstr "Videos"
+
+msgid "Storage Used"
+msgstr "Storage Used"
+
+msgid "Recent Reviews"
+msgstr "Recent Reviews"
+
+msgid "All Reviews"
+msgstr "All Reviews"
+
+msgid "Folder Security"
+msgstr "Folder Security"
+
+msgid "Upload Files"
+msgstr "Upload Files"
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "Protect"
+msgstr "Protect"
+
+msgid "Unprotect"
+msgstr "Unprotect"
+
+msgid "Regenerate Key"
+msgstr "Regenerate Key"
+
+msgid "Access Key"
+msgstr "Access Key"
+
+msgid "Created"
+msgstr "Created"
+
+msgid "Regenerated"
+msgstr "Regenerated"
+
+# Reviews
+msgid "Leave a Review"
+msgstr "Leave a Review"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Rating"
+msgstr "Rating"
+
+msgid "Comment"
+msgstr "Comment"
+
+msgid "Submit Review"
+msgstr "Submit Review"
+
+msgid "Thank you for your review!"
+msgstr "Thank you for your review!"
+
+# Footer
+msgid "© 2026 Prissma Studio. All rights reserved."
+msgstr "© 2026 Prissma Studio. All rights reserved."
+
+# Language selector
+msgid "Language"
+msgstr "Language"
+
+msgid "Romanian"
+msgstr "Romanian"
+
+msgid "English"
+msgstr "English"
+
+msgid "Hungarian"
+msgstr "Hungarian"
+
+# Admin titles and pages
+msgid "Admin Dashboard - Prissma Studio"
+msgstr "Admin Dashboard - Prissma Studio"
+
+msgid "Upload - Prissma Studio"
+msgstr "Upload - Prissma Studio"
+
+msgid "Admin - Recenzii Prissma"
+msgstr "Admin - Client Reviews Prissma"
+
+msgid "Admin Login - Prissma Studio"
+msgstr "Admin Login - Prissma Studio"
+
+# Upload page
+msgid "Upload new files"
+msgstr "Upload new files"
+
+msgid "Folder name:"
+msgstr "Folder name:"
+
+msgid "ex: wedding_event"
+msgstr "ex: wedding_event"
+
+msgid "Click here to select files"
+msgstr "Click here to select files"
+
+msgid "Or drag and drop files here"
+msgstr "Or drag and drop files here"
+
+msgid "Selected files:"
+msgstr "Selected files:"
+
+msgid "Upload files"
+msgstr "Upload files"
+
+msgid "Back to dashboard"
+msgstr "Back to dashboard"
+
+# Reviews admin page
+msgid "Back to Admin"
+msgstr "Back to Admin"
+
+msgid "Client Reviews"
+msgstr "Client Reviews"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Email / Instagram"
+msgstr "Email / Instagram"
+
+msgid "Project"
+msgstr "Project"
+
+msgid "Review"
+msgstr "Review"
+
+# Error messages
+msgid "Incorrect access key!"
+msgstr "Incorrect access key!"
+
+msgid "The link has expired or is invalid!"
+msgstr "The link has expired or is invalid!"
+
+# API messages
+msgid "Folder not protected"
+msgstr "Folder not protected"
+
+msgid "Invalid access key"
+msgstr "Invalid access key"
+
+msgid "Failed to save review"
+msgstr "Failed to save review"
+
+msgid "Please complete all review fields."
+msgstr "Please complete all review fields."
+
+msgid "Review submitted successfully! Thank you."
+msgstr "Review submitted successfully! Thank you."
+
+msgid "Anonymous"
+msgstr "Anonymous"
+
+msgid "No contact info"
+msgstr "No contact info"
+
+msgid "Unknown Project"
+msgstr "Unknown Project"
+
+msgid "No access"
+msgstr "No access"
+
+# Page titles
+msgid "Gallery Pro - Prissma Studio"
+msgstr "Gallery Pro - Prissma Studio"
+
+msgid "About Us - Prissma Studio"
+msgstr "About Us - Prissma Studio"
+
+msgid "Welcome - Prissma Studio"
+msgstr "Welcome - Prissma Studio"
+
+msgid "Unlock Folder - Prissma Studio"
+msgstr "Unlock Folder - Prissma Studio"
+
+msgid "PRISSMA STUDIO CORE v10.0"
+msgstr "PRISSMA STUDIO CORE v10.0"
+
+# About page
+msgid "Our Story"
+msgstr "Our Story"
+
+msgid "Prissma Studio: Art through the lens."
+msgstr "Prissma Studio: Art through the lens."
+
+msgid "Founded in 2026, Prissma Studio was born from the desire to transform fleeting moments into eternal memories. Each project is approached with a unique vision, combining cutting-edge technology with a minimalist and refined aesthetic. We are a team of creatives dedicated to absolute quality, whether we talk about commercial photography, events or high-fidelity video production."
+msgstr "Founded in 2026, Prissma Studio was born from the desire to transform fleeting moments into eternal memories. Each project is approached with a unique vision, combining cutting-edge technology with a minimalist and refined aesthetic. We are a team of creatives dedicated to absolute quality, whether we talk about commercial photography, events or high-fidelity video production."
+
+msgid "See Portfolio"
+msgstr "See Portfolio"
+
+msgid "Pro Services"
+msgstr "Pro Services"
+
+msgid "Photography"
+msgstr "Photography"
+
+msgid "From studio sessions to fashion and event photography, we capture the essence of each subject."
+msgstr "From studio sessions to fashion and event photography, we capture the essence of each subject."
+
+msgid "Video Production"
+msgstr "Video Production"
+
+msgid "High-definition cinematography (4K/8K) for brands and moments worth revisiting."
+msgstr "High-definition cinematography (4K/8K) for brands and moments worth revisiting."
+
+msgid "Post-Production"
+msgstr "Post-Production"
+
+msgid "Advanced editing, colorization and digital retouching for a flawless final result."
+msgstr "Advanced editing, colorization and digital retouching for a flawless final result."
+
+msgid "Ready to start a project?"
+msgstr "Ready to start a project?"
+
+msgid "Contact us for a personalized quote or to schedule a studio visit."
+msgstr "Contact us for a personalized quote or to schedule a studio visit."
+
+# Empty folder status messages
+msgid "STATUS CATALOG"
+msgstr "CATALOG STATUS"
+
+msgid "HDD DISCONNECTED - DATA UNAVAILABLE"
+msgstr "HDD DISCONNECTED - DATA UNAVAILABLE"
+
+msgid "FOLDER DOES NOT CONTAIN MEDIA FILES"
+msgstr "FOLDER DOES NOT CONTAIN MEDIA FILES"
+
+msgid "RETURN TO PORTFOLIO"
+msgstr "RETURN TO PORTFOLIO"
+
+# JavaScript error messages
+msgid "Incorrect access key!"
+msgstr "Incorrect access key!"
+
+msgid "Unlock error. Please try again."
+msgstr "Unlock error. Please try again."
+
+msgid "Download processing error. Check your connection."
+msgstr "Download processing error. Check your connection."
+
+# Admin folder security messages
+msgid "Folder protected! Key: "
+msgstr "Folder protected! Key: "
+
+msgid "Error protecting folder"
+msgstr "Error protecting folder"
+
+msgid "Error: "
+msgstr "Error: "
+
+msgid "Folder unprotected!"
+msgstr "Folder unprotected!"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Key regenerated! New key: "
+msgstr "Key regenerated! New key: "
+
+msgid "Share link copied! 🔗"
+msgstr "Share link copied! 🔗"
+
+msgid "Could not copy"
+msgstr "Could not copy"
+
+msgid "Key copied!"
+msgstr "Key copied!"
+
+msgid "CACHE VIEW MODE (HDD CONNECTION INTERRUPTED)"
+msgstr "CACHE VIEW MODE (HDD CONNECTION INTERRUPTED)"
+
+msgid "No comment provided"
+msgstr "No comment provided"
+
+# Help Guide
+msgid "Viewing Guide"
+msgstr "Viewing Guide"
+
+msgid "Click"
+msgstr "Click"
+
+msgid "Full Screen View (smart scaling)"
+msgstr "Full Screen View (smart scaling)"
+
+msgid "Ctrl/Cmd + Click"
+msgstr "Ctrl/Cmd + Click"
+
+msgid "Quick file selection"
+msgstr "Quick file selection"
+
+msgid "Arrow Keys"
+msgstr "Arrow Keys"
+
+msgid "Left/right navigation in Lightbox"
+msgstr "Left/right navigation in Lightbox"
+
+msgid "ESC Key"
+msgstr "ESC Key"
+
+msgid "Quick close of active modes"
+msgstr "Quick close of active modes"
+
+msgid "+/- Buttons"
+msgstr "+/- Buttons"
+
+msgid "Precise control over column count"
+msgstr "Precise control over column count"
+
+msgid "Keyboard zoom control"
+msgstr "Keyboard zoom control"
+
+msgid "I understand"
+msgstr "I understand"
+
+msgid "Help"
+msgstr "Help"
+
+msgid "Selected"
+msgstr "SELECTED"
+
+msgid "Download Selection"
+msgstr "Download Selection"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+# Admin Folder Security
+msgid "Folder Security"
+msgstr "Folder Security"
+
+msgid "Access Key Management"
+msgstr "Access Key Management"
+
+msgid "From this page you can protect folders with unique access keys. Users will need to enter the key to access the folder."
+msgstr "From this page you can protect folders with unique access keys. Users will need to enter the key to access the folder."
+
+msgid "PROTECTED"
+msgstr "PROTECTED"
+
+msgid "UNPROTECTED"
+msgstr "UNPROTECTED"
+
+msgid "Copy"
+msgstr "Copy"
+
+msgid "Share Link (Direct):"
+msgstr "Share Link (Direct):"
+
+msgid "Copy Link"
+msgstr "Copy Link"
+
+msgid "Created:"
+msgstr "Created:"
+
+msgid "Protect"
+msgstr "Protect"
+
+msgid "Regenerate"
+msgstr "Regenerate"
+
+msgid "Unprotect"
+msgstr "Unprotect"
+
+msgid "No folders available for protection."
+msgstr "No folders available for protection."
+
+msgid "Processing..."
+msgstr "Processing..."
+
+msgid "Are you sure you want to unprotect this folder?"
+msgstr "Are you sure you want to unprotect this folder?"
+
+msgid "This will invalidate the old key! Continue?"
+msgstr "This will invalidate the old key! Continue?"
+
+msgid "Regenerating..."
+msgstr "Regenerating..."

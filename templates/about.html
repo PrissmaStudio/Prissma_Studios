@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>{{ _('About Us - Prissma Studio') }}</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ range(1, 999999) | random }}">
+   
+    <style>
+        /* =======================================================
+           CONFIGURARE TEMA
+           ======================================================= */
+        :root {
+            --acc: #4285f4;
+            --header-h: 100px;
+            --bg-dark: #08080c;
+            --radius: 12px;
+        }
+
+        /* RESET & SAFARI FIX */
+        html { height: -webkit-fill-available; margin: 0; padding: 0; }
+        body { 
+            color: white; font-family: 'Poppins', sans-serif; 
+            margin: 0; padding: 0;
+            overflow-x: hidden; -webkit-overflow-scrolling: touch;
+        }
+
+        /* =======================================================
+           HEADER (IDENTIC CU GALERIA)
+           ======================================================= */
+        header {
+            display: flex !important; align-items: center !important; justify-content: space-between !important;
+            padding: 0 40px !important; height: var(--header-h) !important;
+            position: fixed !important; top: 0; left: 0; right: 0; z-index: 9999;
+            background: rgba(10, 10, 12, 0.85) !important;
+            backdrop-filter: blur(30px) saturate(180%); -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-capsule {
+            display: inline-flex; align-items: center; justify-content: center;
+            height: 42px; padding: 0 25px; background: rgba(255, 255, 255, 0.08);
+            color: white; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 50px;
+            font-size: 13px; font-weight: 600; text-decoration: none; transition: 0.2s;
+        }
+        .header-capsule:hover { background: rgba(255,255,255,0.15); border-color: var(--acc); }
+
+        /* =======================================================
+           CONTENT LAYOUT
+           ======================================================= */
+        main { margin-top: var(--header-h); padding-bottom: 100px; }
+
+        .about-hero {
+            display: flex; align-items: center; min-height: 80vh;
+            padding: 0 10%; gap: 80px;
+        }
+
+        @media (max-width: 1100px) {
+            .about-hero { flex-direction: column; padding: 50px 5%; text-align: center; }
+            .about-image { width: 100% !important; height: 400px !important; }
+        }
+
+        .about-image {
+            flex: 1; position: relative; width: 50%; height: 600px;
+            border: 1px solid rgba(255,255,255,0.1); overflow: hidden;
+            border-radius: var(--radius);
+        }
+        .about-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        .about-text { flex: 1; }
+        
+        /* BOX SQUARE PENTRU TITLU */
+        .title-badge {
+            display: inline-block; padding: 12px 30px; background: rgba(66, 133, 244, 0.1);
+            border: 1px solid var(--acc); color: var(--acc); font-weight: 700;
+            letter-spacing: 4px; text-transform: uppercase; font-size: 13px;
+            margin-bottom: 30px; border-radius: 0 !important; /* SQUARE */
+        }
+
+        .about-text h1 { font-size: clamp(35px, 5vw, 65px); font-weight: 700; margin: 0 0 30px 0; line-height: 1.1; }
+        .about-text p { font-size: 18px; line-height: 1.8; opacity: 0.7; font-weight: 300; }
+
+        /* =======================================================
+           SERVICES GRID (IDENTIC CU CARDURILE DIN GALERIE)
+           ======================================================= */
+        .services-section { padding: 100px 10%; }
+        .services-section h2 { text-align: center; font-size: 30px; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 60px; }
+
+        .services-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+            padding: 50px 40px; border-radius: var(--radius); transition: all 0.4s ease;
+            text-align: center;
+        }
+        .service-card:hover {
+            background: rgba(255,255,255,0.05); transform: translateY(-10px);
+            border-color: var(--acc); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(66, 133, 244, 0.2);
+        }
+
+        .service-icon { width: 60px; height: 60px; margin: 0 auto 30px; color: var(--acc); }
+        .service-card h3 { font-size: 22px; margin-bottom: 15px; letter-spacing: 1px; }
+        .service-card p { opacity: 0.6; font-size: 15px; line-height: 1.6; }
+
+        /* =======================================================
+           FOOTER BOX (SQUARE)
+           ======================================================= */
+        .contact-cta {
+            margin: 100px 10% 0; padding: 60px; background: #111;
+            border: 1px solid rgba(255,255,255,0.05); text-align: center;
+            border-radius: 0 !important; /* SQUARE */
+        }
+        .contact-cta h2 { font-size: 35px; margin-bottom: 20px; }
+        .contact-cta p { margin-bottom: 40px; opacity: 0.6; }
+
+        /* DROPDOWN PROJECTS */
+        .dropdown { position: relative; display: inline-block; }
+        .drop-content { 
+            display: none; position: absolute; top: 100%; left: 0; 
+            background: rgba(15, 15, 20, 0.98); min-width: 240px; 
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; 
+            z-index: 1000; margin-top: 15px; padding: 15px 0;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+        .dropdown:hover .drop-content { display: block; }
+        .drop-content a { color: white; padding: 14px 28px; text-decoration: none; display: block; font-size: 14px; transition: 0.2s; }
+        .drop-content a:hover { background: rgba(255,255,255,0.05); color: var(--acc); }
+
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/site-refresh.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile-ux.css') }}">
+    <script defer src="{{ url_for('static', filename='js/mobile-ux.js') }}"></script>
+</head>
+
+<body class="about-page">
+
+    <header class="about-header">
+        <div class="header-left-block" style="display: flex; align-items: center; gap: 20px;">
+            <a href="/"><img src="{{ url_for('static', filename='img/optimized/Untitled design - 2.webp') }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/Untitled design - 2.png') }}';" style="height: 52px;"></a>
+            <nav class="header-nav" style="display: flex; gap: 10px;">
+                <a href="/gallery" class="header-capsule">Galerie</a>
+                <div class="dropdown">
+                    <button class="header-capsule">Proiecte ▼</button>
+                    <div class="drop-content">
+                        {% for p in proiecte_dropdown %}<a href="/f/{{ p }}">{{ p|replace('_', ' ') }}</a>{% endfor %}
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="header-right-block" style="display: flex; align-items: center; gap: 20px;">
+            <a href="/admin/login" class="header-capsule" style="opacity:0.4;">Admin</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="about-hero">
+            <div class="about-image">
+                <img src="{{ url_for('static', filename='img/studio_session.jpg') }}" alt="Prissma Studio Session">
+            </div>
+            
+            <div class="about-text">
+                <div class="title-badge">{{ _('Our Story') }}</div>
+                <h1>{{ _('Prissma Studio: Art through the lens.') }}</h1>
+                <p>
+                    {{ _('Founded in 2026, Prissma Studio was born from the desire to transform fleeting moments into eternal memories. Each project is approached with a unique vision, combining cutting-edge technology with a minimalist and refined aesthetic. We are a team of creatives dedicated to absolute quality, whether we talk about commercial photography, events or high-fidelity video production.') }}
+                </p>
+                <div style="margin-top: 40px;">
+                    <a href="/gallery" class="header-capsule" style="background: var(--acc); border: none; padding: 15px 40px; height: auto;">{{ _('See Portfolio') }}</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="services-section">
+            <h2>{{ _('Pro Services') }}</h2>
+            <div class="services-grid">
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    </div>
+                    <h3>{{ _('Photography') }}</h3>
+                    <p>{{ _('From studio sessions to fashion and event photography, we capture the essence of each subject.') }}</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                    </div>
+                    <h3>{{ _('Video Production') }}</h3>
+                    <p>{{ _('High-definition cinematography (4K/8K) for brands and moments worth revisiting.') }}</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    </div>
+                    <h3>{{ _('Post-Production') }}</h3>
+                    <p>{{ _('Advanced editing, colorization and digital retouching for a flawless final result.') }}</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="contact-cta">
+            <h2>{{ _('Ready to start a project?') }}</h2>
+            <p>{{ _('Contact us for a personalized quote or to schedule a studio visit.') }}</p>
+            <div style="display: flex; gap: 20px; justify-content: center;">
+                <a href="mailto:hello@prissma.ro" class="header-capsule">hello@prissma.ro</a>
+                <span class="header-capsule" style="cursor: default;">+40 7xx xxx xxx</span>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Smooth reveal la scroll
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+        });
+    </script>
+</body>
+</html>

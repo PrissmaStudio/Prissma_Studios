@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{{ _('Gallery Pro - Prissma Studio') }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        :root {
+            --grid-size: 340px;
+            --grid-gap: 22px;
+            --header-h: 110px;
+            --acc: #4285f4;
+            --lb-gap: 24px;
+            --lb-label-space: 56px;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden;
+        }
+
+        body.page-loading {
+            overflow: hidden;
+        }
+
+        .page-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 14000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            background: radial-gradient(circle at 50% -20%, #17171d 0%, #0a0a0f 42%, #050506 100%);
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+        }
+
+        .page-loader.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .page-loader-logo {
+            width: min(180px, 50vw);
+            height: auto;
+            opacity: 0.92;
+        }
+
+        .page-loader-spinner {
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            border: 3px solid rgba(255, 255, 255, 0.16);
+            border-top-color: var(--acc);
+            animation: pageLoaderSpin 0.8s linear infinite;
+        }
+
+        .page-loader-text {
+            font-size: 11px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        @keyframes pageLoaderSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        header {
+            height: var(--header-h) !important;
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding: 0 35px !important;
+            background: rgba(8, 8, 12, 0.88) !important;
+            backdrop-filter: blur(35px) saturate(160%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        main {
+            margin-top: var(--header-h);
+            min-height: calc(100vh - var(--header-h));
+        }
+
+        .header-left, .header-right, .nav-links-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .mobile-drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(4px);
+            z-index: 10990;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .mobile-drawer-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .mobile-drawer {
+            position: fixed;
+            top: var(--header-h);
+            left: 0;
+            right: 0;
+            z-index: 11000;
+            background: rgba(8, 8, 12, 0.96);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(-14px);
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.2s ease;
+            max-height: calc(100vh - var(--header-h));
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .mobile-drawer.open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .mobile-drawer .drawer-section {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .mobile-drawer .drawer-title {
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.55);
+            padding: 4px 6px;
+        }
+
+        .mobile-drawer .header-capsule {
+            width: 100%;
+            justify-content: flex-start;
+            height: 42px;
+            font-size: 11px;
+        }
+
+        .header-center-area {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(14px, 1.6vw, 21px);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #fff;
+            pointer-events: none;
+        }
+
+        .header-capsule {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 42px;
+            padding: 0 16px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            text-decoration: none;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.25s;
+            white-space: nowrap;
+        }
+
+        .header-capsule:hover {
+            border-color: var(--acc);
+            background: rgba(66, 133, 244, 0.14);
+            transform: translateY(-2px);
+        }
+
+        .header-capsule.active-mode {
+            background: var(--acc);
+            border-color: var(--acc);
+        }
+
+        .dropdown-logic {
+            position: relative;
+        }
+
+        .dropdown-list-items {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            min-width: 240px;
+            max-height: 65vh;
+            overflow-y: auto;
+            background: rgba(8, 8, 12, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            z-index: 12000;
+        }
+
+        header {
+            overflow: visible !important;
+        }
+
+        .dropdown-logic:hover .dropdown-list-items {
+            display: block;
+        }
+
+        .dropdown-list-items a {
+            display: block;
+            padding: 12px 14px;
+            text-decoration: none;
+            color: #ddd;
+            font-size: 12px;
+        }
+
+        .dropdown-list-items a:hover {
+            background: rgba(66, 133, 244, 0.2);
+            color: #fff;
+        }
+
+        .dropdown-logic.open .dropdown-list-items {
+            display: block;
+        }
+
+        .zoom-controls-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 99px;
+            padding: 4px;
+        }
+
+        .btn-zoom-action {
+            width: 34px;
+            height: 34px;
+            border-radius: 999px;
+            border: 0;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .btn-zoom-action:hover {
+            background: var(--acc);
+        }
+
+        .gallery-grid-engine {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(var(--grid-size), 1fr));
+            grid-auto-rows: auto;
+            gap: var(--grid-gap);
+            padding: var(--grid-gap);
+        }
+
+        .media-card {
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.28s;
+            aspect-ratio: 16 / 9;
+            transform: translateZ(0);
+        }
+
+        .media-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.28s ease;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .media-card.is-loaded img {
+            opacity: 1;
+        }
+
+        .media-card.portrait-mode img {
+            object-fit: contain;
+        }
+
+        /* Păstrăm raportul original al imaginii în același chenar, cu fundal blur. */
+        .media-card::before {
+            content: '';
+            position: absolute;
+            inset: -12%;
+            background-image: var(--bg-url);
+            background-size: cover;
+            background-position: center;
+            filter: blur(34px) brightness(0.42);
+            transform: scale(1.12);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.28s ease;
+        }
+
+        .media-card:not(.portrait-mode)::before {
+            display: none;
+        }
+
+        .media-card.portrait-mode::before {
+            opacity: 1;
+        }
+
+        .media-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--acc);
+            box-shadow: 0 24px 45px rgba(0, 0, 0, 0.55);
+        }
+
+        .media-card.is-selected {
+            outline: 4px solid var(--acc);
+            outline-offset: -4px;
+            transform: scale(0.95);
+        }
+
+        .selection-tray-footer {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -140px;
+            z-index: 9500;
+            background: rgba(8, 8, 12, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            border-radius: 999px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: 0.28s;
+        }
+
+        body.selection-active .selection-tray-footer {
+            bottom: 30px;
+        }
+
+        .modal-engine-view {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9900;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(24px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-modal-close {
+            position: absolute;
+            top: 26px;
+            right: 24px;
+            z-index: 10020;
+            width: 56px;
+            height: 56px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            font-size: 50px;
+            border: 0;
+            background: none;
+            color: #fff;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .btn-modal-close:hover {
+            opacity: 1;
+            color: #ff5e5e;
+        }
+
+        .lightbox-stage {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: calc(var(--header-h) + var(--lb-gap)) 24px var(--lb-gap);
+        }
+
+        #lb-display-img, #lb-display-vid {
+            max-width: 95vw;
+            max-height: calc(100vh - var(--header-h) - (2 * var(--lb-gap)) - var(--lb-label-space));
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .lb-navigation-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 62px;
+            height: 62px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 34px;
+            cursor: pointer;
+        }
+
+        .nav-prev { left: 22px; }
+        .nav-next { right: 22px; }
+
+        .lb-info-label {
+            margin-top: 16px;
+            color: #ccc;
+            font-size: 13px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            width: min(96vw, 1100px);
+            text-align: center;
+            padding: 0 6px;
+            overflow: hidden;
+        }
+
+        #lb-display-filename {
+            margin: 0;
+            font-size: clamp(12px, 1.15vw, 15px);
+            font-weight: 600;
+            line-height: 1.35;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .status-msg-square-box {
+            width: min(520px, 92vw);
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 24px;
+            color: #fff;
+        }
+
+        .unlock-modal-overlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            background: rgba(8, 8, 12, 0.95);
+        }
+
+        .unlock-modal-content {
+            width: min(420px, 92vw);
+            background: #111115;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 28px;
+            position: relative;
+            color: #fff;
+        }
+
+        .unlock-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            border: 0;
+            background: none;
+            color: rgba(255,255,255,0.7);
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .unlock-form label {
+            display: block;
+            margin-bottom: 6px;
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .unlock-form input {
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.04);
+            color: #fff;
+            padding: 12px;
+        }
+
+        .unlock-form .btn-unlock {
+            margin-top: 14px;
+            width: 100%;
+            border: 0;
+            border-radius: 10px;
+            padding: 12px;
+            background: var(--acc);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .error-message {
+            display: none;
+            margin-bottom: 10px;
+            font-size: 12px;
+            border: 1px solid rgba(255, 100, 100, 0.35);
+            background: rgba(255, 100, 100, 0.12);
+            color: #ff8d8d;
+            border-radius: 8px;
+            padding: 8px 10px;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .mobile-help-fab {
+            display: none;
+            position: fixed;
+            right: 12px;
+            bottom: 92px;
+            z-index: 9800;
+            width: 46px;
+            height: 46px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(8, 8, 12, 0.9);
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .mobile-help-list {
+            display: none;
+        }
+
+        .folder-media-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: linear-gradient(155deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+            aspect-ratio: 16 / 9;
+            padding: 14px;
+            gap: 0;
+            transition: 0.24s;
+            overflow: hidden;
+            transform: translateZ(0);
+        }
+
+        .folder-media-card:hover {
+            border-color: var(--acc);
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+            background: linear-gradient(155deg, rgba(66, 133, 244, 0.24), rgba(66, 133, 244, 0.08));
+        }
+
+        .folder-media-icon {
+            width: 100%;
+            height: clamp(92px, 12vw, 170px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+        }
+
+        .folder-media-icon svg {
+            width: auto;
+            height: 100%;
+            max-width: 100%;
+            display: block;
+            opacity: 0.94;
+        }
+
+        .folder-media-name {
+            max-width: 100%;
+            text-align: center;
+            margin-top: 3px;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.35;
+            overflow-wrap: anywhere;
+        }
+
+        .folder-media-project {
+            border-color: rgba(66, 133, 244, 0.5);
+            background: linear-gradient(155deg, rgba(66, 133, 244, 0.35), rgba(66, 133, 244, 0.12));
+        }
+
+        .folder-media-back {
+            border-color: rgba(255, 255, 255, 0.28);
+            background: linear-gradient(155deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.07));
+        }
+
+        .gallery-grid-engine.only-folder-cards .folder-media-card {
+            aspect-ratio: 1 / 1;
+        }
+
+        .gallery-grid-engine.only-folder-cards {
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        }
+
+        .gallery-grid-engine.only-folder-cards .folder-media-icon {
+            height: clamp(70px, 9vw, 128px);
+        }
+
+        .folder-media-badge {
+            font-size: 10px;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(0, 0, 0, 0.22);
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .hdd-offline-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            width: 15px;
+            height: 15px;
+            margin-left: 6px;
+            opacity: 0.92;
+        }
+
+        .hdd-offline-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .project-entry {
+            display: flex !important;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .project-entry-name {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .project-entry-marker {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.78);
+            flex: 0 0 auto;
+        }
+
+        .project-entry-marker .hdd-offline-icon,
+        .drawer-title .hdd-offline-icon {
+            margin-left: 0;
+            width: 14px;
+            height: 14px;
+        }
+
+        .mobile-drawer .header-capsule.project-entry {
+            justify-content: space-between;
+            padding-right: 12px;
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --header-h: 82px;
+                --grid-size: 45vw;
+                --grid-gap: 6px;
+                --lb-gap: 10px;
+                --lb-label-space: 52px;
+            }
+
+            .gallery-grid-engine {
+                grid-template-columns: 1fr !important;
+                grid-auto-rows: auto;
+                padding: 4px;
+                gap: 6px;
+            }
+
+            .folder-media-card {
+                aspect-ratio: 16 / 9;
+            }
+
+            .gallery-grid-engine.only-folder-cards .folder-media-card {
+                aspect-ratio: 1 / 1;
+            }
+
+            .gallery-grid-engine.only-folder-cards {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            }
+
+            .gallery-grid-engine.only-folder-cards .folder-media-icon {
+                height: clamp(64px, 22vw, 118px);
+            }
+
+            .media-card {
+                width: 100%;
+                aspect-ratio: 16 / 9;
+            }
+
+            header {
+                padding: 0 12px !important;
+            }
+
+            .header-center-area {
+                display: none;
+            }
+
+            .nav-links-wrapper {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .header-right {
+                gap: 8px;
+            }
+
+            .header-right .zoom-controls-group,
+            .header-right .header-capsule:not(#master-select-btn) {
+                display: none;
+            }
+
+            .header-capsule {
+                height: 38px;
+                padding: 0 10px;
+                font-size: 10px;
+            }
+
+            .selection-tray-footer {
+                width: calc(100% - 20px);
+                border-radius: 14px;
+                justify-content: space-between;
+                bottom: -170px;
+            }
+
+            body.selection-active .selection-tray-footer {
+                bottom: 16px;
+            }
+
+            .lb-navigation-btn {
+                display: none;
+            }
+
+            .lightbox-stage {
+                padding: calc(var(--header-h) + var(--lb-gap)) 10px var(--lb-gap);
+            }
+
+            .mobile-help-fab {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #lb-display-img,
+            #lb-display-vid {
+                max-width: calc(100vw - 20px);
+                max-height: calc((var(--app-vh, 1vh) * 100) - var(--header-h) - (2 * var(--lb-gap)) - var(--lb-label-space));
+            }
+
+            .lb-info-label {
+                margin-top: 10px;
+                font-size: 11px;
+                letter-spacing: 0.7px;
+                width: calc(100vw - 20px);
+            }
+
+            #lb-display-filename {
+                font-size: 11px;
+                line-height: 1.3;
+                display: -webkit-box;
+                line-clamp: 2;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .desktop-help-list {
+                display: none;
+            }
+
+            .mobile-help-list {
+                display: block;
+            }
+        }
+
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 22px;
+    color: #6366f1;
+}
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/site-refresh.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile-ux.css') }}">
+    <script defer src="{{ url_for('static', filename='js/mobile-ux.js') }}"></script>
+</head>
+<body id="prissma-engine-v10" class="page-loading {% if is_offline %}is-offline{% endif %}">
+    <div id="page-loader" class="page-loader" aria-live="polite" aria-label="Loading screen">
+        <img class="page-loader-logo" src="{{ url_for('static', filename='img/optimized/Untitled design - 2.webp') }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/Untitled design - 2.png') }}';" alt="Prissma Studio">
+        <div class="page-loader-spinner"></div>
+        <div class="page-loader-text">{{ _('Loading') }}</div>
+    </div>
+    {% set offline_hdd_icon %}<span class="hdd-offline-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2"></rect><circle cx="8" cy="12" r="0.8"></circle><circle cx="12" cy="12" r="0.8"></circle><path d="M2.5 4.5l19 15"></path></svg></span>{% endset %}
+
+    <header>
+        <div class="header-left">
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle" type="button" aria-label="Open menu" onclick="toggleMobileMenu(event)">☰</button>
+            <a href="/"><img src="{{ url_for('static', filename='img/optimized/Untitled design - 2.webp') }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/Untitled design - 2.png') }}';" style="height:52px; display:block;" alt="Prissma"></a>
+            <div class="nav-links-wrapper">
+                <a href="/gallery" class="header-capsule">{{ _('Gallery') }}</a>
+                <a href="/about" class="header-capsule">{{ _('About') }}</a>
+                <div class="dropdown-logic" id="projects-drop">
+                    <button class="header-capsule" onclick="toggleProjectsDrop(event)">{{ _('Projects') }}{% if is_offline %}{{ offline_hdd_icon|safe }}{% endif %} ▼</button>
+                    <div class="dropdown-list-items">
+                        {% set dd = namespace(roots=[]) %}
+                        {% if proiecte_dropdown is defined and proiecte_dropdown %}
+                            {% for p in proiecte_dropdown %}
+                                {% set root = p.split('/')[0] %}
+                                {% if root and root not in dd.roots %}
+                                    {% set dd.roots = dd.roots + [root] %}
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            {% for p in proiecte %}
+                                {% set root = p.split('/')[0] %}
+                                {% if root and root not in dd.roots %}
+                                    {% set dd.roots = dd.roots + [root] %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                        {% for root in dd.roots %}
+                            <a href="/f/{{ root }}" class="project-entry">
+                                <span class="project-entry-name">{{ root|replace('_', ' ') }}</span>
+                                {% if is_offline %}<span class="project-entry-marker">{{ offline_hdd_icon|safe }}</span>{% endif %}
+                            </a>
+                        {% endfor %}
+
+                        {% if not dd.roots and project_root %}
+                            <a href="/f/{{ project_root }}" class="project-entry">
+                                <span class="project-entry-name">{{ project_root|replace('_', ' ') }}</span>
+                                {% if is_offline %}<span class="project-entry-marker">{{ offline_hdd_icon|safe }}</span>{% endif %}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <button class="header-capsule" onclick="toggleTutorialModal()">{{ _('Help') }}</button>
+            </div>
+        </div>
+
+        <div class="header-center-area">{{ folder_activ|replace('_', ' ') }}</div>
+
+        <div class="header-right">
+            <select onchange="changeLanguage(this.value)" class="header-capsule">
+                {% for lang in available_languages %}
+                    <option value="{{ lang.code }}" {% if lang.code == current_lang %}selected{% endif %}>{{ lang.name }}</option>
+                {% endfor %}
+            </select>
+            <div class="zoom-controls-group">
+                <button class="btn-zoom-action" onclick="adjustGridZoom(-1)">−</button>
+                <button class="btn-zoom-action" onclick="adjustGridZoom(1)">+</button>
+            </div>
+            <button class="header-capsule" onclick="openUnlockModal()">🔓 {{ _('Unlock') }}</button>
+            <button class="header-capsule" id="master-select-btn" onclick="toggleSelectionEngine()">{{ _('Select Images') }}</button>
+            {% if is_admin %}
+                <a href="/admin/dashboard" id="admin-panel-btn" class="header-capsule active-mode">{{ _('Admin Panel') }}</a>
+            {% else %}
+                <a href="/admin/login" id="admin-panel-btn" class="header-capsule" style="opacity:0.5;">{{ _('Admin Panel') }}</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="mobile-drawer-overlay" id="mobile-drawer-overlay" onclick="closeMobileMenu()"></div>
+    <aside class="mobile-drawer" id="mobile-drawer">
+        <div class="drawer-section">
+            <a href="/gallery" class="header-capsule">{{ _('Gallery') }}</a>
+            <a href="/about" class="header-capsule">{{ _('About') }}</a>
+            <button class="header-capsule" type="button" onclick="toggleTutorialModal(); closeMobileMenu();">{{ _('Help') }}</button>
+            <button class="header-capsule" type="button" onclick="openUnlockModal(); closeMobileMenu();">{{ _('Unlock') }}</button>
+            <button class="header-capsule" type="button" onclick="toggleSelectionEngine(); closeMobileMenu();">{{ _('Select Images') }}</button>
+            {% if is_admin %}
+                <a href="/admin/dashboard" class="header-capsule active-mode">{{ _('Admin Panel') }}</a>
+            {% else %}
+                <a href="/admin/login" class="header-capsule">{{ _('Admin Panel') }}</a>
+            {% endif %}
+        </div>
+
+        <div class="drawer-section">
+            <div class="drawer-title">{{ _('Projects') }}{% if is_offline %}{{ offline_hdd_icon|safe }}{% endif %}</div>
+            {% set dd_mobile = namespace(roots=[]) %}
+            {% if proiecte_dropdown is defined and proiecte_dropdown %}
+                {% for p in proiecte_dropdown %}
+                    {% set root = p.split('/')[0] %}
+                    {% if root and root not in dd_mobile.roots %}
+                        {% set dd_mobile.roots = dd_mobile.roots + [root] %}
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                {% for p in proiecte %}
+                    {% set root = p.split('/')[0] %}
+                    {% if root and root not in dd_mobile.roots %}
+                        {% set dd_mobile.roots = dd_mobile.roots + [root] %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            {% for root in dd_mobile.roots %}
+                <a href="/f/{{ root }}" class="header-capsule project-entry">
+                    <span class="project-entry-name">{{ root|replace('_', ' ') }}</span>
+                    {% if is_offline %}<span class="project-entry-marker">{{ offline_hdd_icon|safe }}</span>{% endif %}
+                </a>
+            {% endfor %}
+
+            {% if not dd_mobile.roots and project_root %}
+                <a href="/f/{{ project_root }}" class="header-capsule project-entry">
+                    <span class="project-entry-name">{{ project_root|replace('_', ' ') }}</span>
+                    {% if is_offline %}<span class="project-entry-marker">{{ offline_hdd_icon|safe }}</span>{% endif %}
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="drawer-section">
+            <div class="drawer-title">{{ _('Language') }}</div>
+            <select onchange="changeLanguage(this.value)" class="header-capsule" style="width:100%; height:42px;">
+                {% for lang in available_languages %}
+                    <option value="{{ lang.code }}" {% if lang.code == current_lang %}selected{% endif %}>{{ lang.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </aside>
+
+    <button class="mobile-help-fab" type="button" aria-label="Open help" onclick="toggleTutorialModal()">?</button>
+
+    <main>
+        {% if is_offline %}
+            <div style="margin: 14px 0 0; width: 100%; min-height: 44px; padding: 0 16px; border-radius: 0; border-top: 1px solid rgba(255, 130, 130, 0.35); border-bottom: 1px solid rgba(255, 130, 130, 0.35); background: rgba(140, 24, 24, 0.22); color: rgba(255,255,255,0.92); font-size: 12px; letter-spacing: 0.8px; text-transform: uppercase; text-align: center; box-sizing: border-box; display: flex; align-items: center; justify-content: center;">
+                {{ _('HDD DISCONNECTED - PREVIEW CACHE ONLY') }}
+            </div>
+        {% endif %}
+        <div id="unlock-modal" class="unlock-modal-overlay" style="display: {% if show_unlock_modal %}flex{% else %}none{% endif %};">
+            <div class="unlock-modal-content">
+                <button class="unlock-modal-close" onclick="closeUnlockModal()">&times;</button>
+                <h2 style="margin:0 0 8px;">{{ _('Protected Folder') }}</h2>
+                <p style="font-size:13px; color:rgba(255,255,255,0.65); margin-bottom:16px;">{{ folder_activ|replace('_', ' ') }}</p>
+                <div class="error-message" id="unlock-error"></div>
+                <form id="unlock-form" class="unlock-form">
+                    <label for="access_key">{{ _('Access Key') }}</label>
+                    <input type="password" id="access_key" name="access_key" required autocomplete="off">
+                    <button type="submit" class="btn-unlock">{{ _('Unlock Folder') }}</button>
+                </form>
+            </div>
+        </div>
+
+              
+
+        {% if is_empty %}
+            <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:80vh; text-align:center; padding:20px;">
+                <img src="{{ url_for('static', filename='img/optimized/NoFile.webp') }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/NoFile.png') }}';" alt="No file" style="width:250px; max-width:70vw; margin-bottom:20px;">
+                <h1 style="font-size: clamp(24px, 4vw, 44px); letter-spacing: 10px; text-transform: uppercase; margin-bottom:10px;">{{ folder_activ|replace('_', ' ') }}</h1>
+                <p style="opacity:0.7; margin-bottom:22px;">{% if is_offline %}{{ _('HDD DISCONNECTED - DATA UNAVAILABLE') }}{% else %}{{ _('FOLDER DOES NOT CONTAIN MEDIA FILES') }}{% endif %}</p>
+                {% if '/' in folder_activ %}
+                    <a href="/f/{{ folder_activ.split('/')[:-1]|join('/') }}" class="header-capsule active-mode">{{ _('Go Back') }}</a>
+                {% else %}
+                    <a href="/gallery" class="header-capsule active-mode">{{ _('RETURN TO PORTFOLIO') }}</a>
+                {% endif %}
+            </div>
+        {% else %}
+            {% if fisiere is defined and (fisiere|length == 0) %}
+                <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:22px 20px 10px;">
+                    <img src="{{ url_for('static', filename='img/optimized/NoFile.webp') }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/NoFile.png') }}';" alt="No file" style="width:190px; max-width:58vw; margin-bottom:12px; opacity:0.95;">
+                    <p style="opacity:0.76; margin-bottom:8px; letter-spacing:1px; text-transform:uppercase; font-size:12px;">{{ _('FOLDER DOES NOT CONTAIN MEDIA FILES') }}</p>
+                </div>
+            {% endif %}
+            <div class="gallery-grid-engine{% if fisiere is defined and (fisiere|length == 0) %} only-folder-cards{% endif %}" id="main-gallery-v10">
+                {% if '/' in folder_activ %}
+                    <a class="folder-media-card folder-media-back" href="/f/{{ folder_activ.split('/')[:-1]|join('/') }}" aria-label="{{ _('Go back to parent folder') }}" title="{{ _('Go Back') }}">
+                        <div class="folder-media-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 14L4 9l5-5"></path>
+                                <path d="M20 20a8 8 0 0 0-8-8H4"></path>
+                            </svg>
+                        </div>
+                        <div class="folder-media-name">{{ _('Go Back') }}</div>
+                    </a>
+                {% endif %}
+
+                {% if best_folder_available %}
+                    <a class="folder-media-card folder-media-best" href="/f/Best" aria-label="{{ _('Best folder') }}" title="{{ _('Best') }}">
+                        <div class="folder-media-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 5h16v14H4z"></path>
+                                <path d="M4 9h16"></path>
+                            </svg>
+                        </div>
+                        <div class="folder-media-name">{{ _('Best') }}</div>
+                        <div class="folder-media-meta">{{ best_folder_count }} {{ _('items') }}</div>
+                    </a>
+                {% endif %}
+
+                {% if project_root %}
+                    <a class="folder-media-card folder-media-project" href="/f/{{ project_root }}" aria-label="{{ _('Project folder') }} {{ project_root|replace('_', ' ') }}" title="{{ project_root|replace('_', ' ') }}">
+                        <div class="folder-media-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"></path>
+                            </svg>
+                        </div>
+                        <div class="folder-media-name">{{ project_root|replace('_', ' ') }}</div>
+                    </a>
+                {% endif %}
+
+                {% for child in subfolders %}
+                    <a class="folder-media-card" href="/f/{{ child }}" aria-label="{{ _('Open folder') }} {{ child.split('/')[-1]|replace('_', ' ') }}" title="{{ child.split('/')[-1]|replace('_', ' ') }}">
+                        <div class="folder-media-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"></path>
+                            </svg>
+                        </div>
+                        <div class="folder-media-name">{{ child.split('/')[-1]|replace('_', ' ') }}</div>
+                    </a>
+                {% endfor %}
+
+                {% for f in fisiere_initial %}
+                    {% set is_vid = f.lower().endswith(('.mp4','.mov','.webm','.avi','.mkv')) %}
+                    {% set path_prefix = folder_activ ~ '/' if folder_activ else '' %}
+                    <div class="media-card" data-filename="{{ f }}" onclick="handleMediaInteraction(event, this, {{ loop.index0 }})">
+                        <img data-src="{{ url_for('serve_thumb', p=path_prefix ~ f) }}" data-lqip="{{ url_for('serve_thumb', p=path_prefix ~ f, variant='lqip') }}" alt="{{ f }}" loading="lazy" decoding="async">
+                        {% if is_vid %}
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; z-index:2;">
+                            <svg width="46" height="46" viewBox="0 0 24 24" fill="white" style="opacity:0.85;"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </main>
+
+    <div id="selection-tray" class="selection-tray-footer">
+        <div style="font-size:15px; font-weight:600;"><span id="selection-count-label" style="color:var(--acc);">0</span> {{ _('Selected') }}</div>
+        <button onclick="initiateZipDownloadProcess()" class="header-capsule active-mode">{{ _('Download Selection') }}</button>
+        <button onclick="toggleSelectionEngine()" class="header-capsule">{{ _('Cancel') }}</button>
+    </div>
+
+    <div id="lightbox-engine-modal" class="modal-engine-view" onclick="closeMediaLightbox()">
+        <button class="btn-modal-close" onclick="closeMediaLightbox()">&times;</button>
+        <button class="lb-navigation-btn nav-prev" onclick="event.stopPropagation(); navigateMedia(-1)">‹</button>
+        <div class="lightbox-stage" id="lightbox-stage" onclick="event.stopPropagation()">
+            <img id="lb-display-img" src="" alt="">
+            <video id="lb-display-vid" controls autoplay muted loop style="display:none;"></video>
+            <div class="lb-info-label"><h3 id="lb-display-filename"></h3></div>
+        </div>
+        <button class="lb-navigation-btn nav-next" onclick="event.stopPropagation(); navigateMedia(1)">›</button>
+    </div>
+
+    <div id="tutorial-modal-view" class="modal-engine-view" onclick="toggleTutorialModal()">
+        <div class="status-msg-square-box" onclick="event.stopPropagation()">
+            <h2 style="color: var(--acc); margin:0 0 12px;">{{ _('Viewing Guide') }}</h2>
+            <ul class="desktop-help-list" style="margin:0; padding-left:20px; line-height:1.9; color:rgba(255,255,255,0.8);">
+                <li>{{ _('Click') }}: {{ _('Full Screen View') }}</li>
+                <li>{{ _('Ctrl/Cmd + Click') }}: {{ _('Quick file selection') }}</li>
+                <li>{{ _('Arrow Keys') }}: {{ _('Navigation in Lightbox') }}</li>
+                <li>{{ _('ESC Key') }}: {{ _('Close active view') }}</li>
+            </ul>
+            <ul class="mobile-help-list" style="margin:0; padding-left:20px; line-height:1.9; color:rgba(255,255,255,0.8);">
+                <li>{{ _('Tap image') }}: {{ _('Open full screen') }}</li>
+                <li>{{ _('Swipe left/right') }}: {{ _('Next or previous media') }}</li>
+                <li>{{ _('Swipe down') }}: {{ _('Close lightbox') }}</li>
+                <li>{{ _('Double tap') }}: {{ _('Quick close lightbox') }}</li>
+                <li>{{ _('Use menu button') }}: {{ _('Access projects and admin') }}</li>
+            </ul>
+            <button class="header-capsule active-mode" style="margin-top:20px; width:100%;" onclick="toggleTutorialModal()">{{ _('I understand') }}</button>
+        </div>
+    </div>
+
+    <script>
+        let currentMediaIndex = 0;
+        let isSelectionModeActive = false;
+        let selectionMemoryStore = new Set();
+        let gridZoomPointer = 2;
+        const gridZoomSteps = [180, 250, 340, 480, 650, 900];
+        const INITIAL_BATCH_SIZE = {{ initial_batch_size|default(30) }};
+        const NETWORK_INFO = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+        function getNetworkProfile() {
+            const isMobileViewport = window.matchMedia('(max-width: 768px)').matches;
+            const saveData = Boolean(NETWORK_INFO && NETWORK_INFO.saveData);
+            const effectiveType = (NETWORK_INFO && NETWORK_INFO.effectiveType) ? NETWORK_INFO.effectiveType.toLowerCase() : '';
+            const downlink = Number((NETWORK_INFO && NETWORK_INFO.downlink) || 0);
+
+            if (saveData || effectiveType.includes('2g')) {
+                return { variant: 'grid_xs', parallel: 1, batch: 14 };
+            }
+            if (effectiveType.includes('3g') || (downlink > 0 && downlink < 8)) {
+                return { variant: 'grid_sm', parallel: isMobileViewport ? 2 : 4, batch: 20 };
+            }
+            if (downlink > 0 && downlink < 20) {
+                return { variant: 'grid_md', parallel: isMobileViewport ? 3 : 6, batch: 28 };
+            }
+
+            return { variant: 'grid', parallel: isMobileViewport ? 5 : 10, batch: 40 };
+        }
+
+        const NETWORK_PROFILE = getNetworkProfile();
+        const THUMB_VARIANT_ORDER = ['grid_xs', 'grid_sm', 'grid_md', 'grid'];
+
+        function getZoomBasedThumbVariant(zoomPointer) {
+            if (zoomPointer <= 1) return 'grid_xs';
+            if (zoomPointer <= 3) return 'grid_sm';
+            if (zoomPointer <= 4) return 'grid_md';
+            return 'grid';
+        }
+
+        function pickSmallerThumbVariant(a, b) {
+            const idxA = Math.max(0, THUMB_VARIANT_ORDER.indexOf(a));
+            const idxB = Math.max(0, THUMB_VARIANT_ORDER.indexOf(b));
+            return THUMB_VARIANT_ORDER[Math.min(idxA, idxB)];
+        }
+
+        let currentGridThumbVariant = pickSmallerThumbVariant(
+            getZoomBasedThumbVariant(gridZoomPointer),
+            NETWORK_PROFILE.variant
+        );
+        const LOAD_BATCH_SIZE = NETWORK_PROFILE.batch;
+        let loadedCardsCount = {{ fisiere_initial|length if fisiere_initial is defined else 0 }};
+        let isBatchLoading = false;
+        let lightboxStatePushed = false;
+        let dominantLandscapeRatio = '16 / 9';
+        let isDominantRatioLocked = false;
+        const MAX_PARALLEL_IMAGE_LOADS = NETWORK_PROFILE.parallel;
+        const sequentialImageQueue = [];
+        let activeSequentialLoads = 0;
+        let viewportActivityRaf = 0;
+        let imageSequenceCounter = 0;
+        let nextImageToReveal = 0;
+        const imageRevealBuffer = new Map();
+        const lightboxPreloadCache = new Map();
+        const LIGHTBOX_PRELOAD_AHEAD = 2;
+
+        function flushImagesInOrder() {
+            while (imageRevealBuffer.has(nextImageToReveal)) {
+                const result = imageRevealBuffer.get(nextImageToReveal);
+                imageRevealBuffer.delete(nextImageToReveal);
+
+                if (result.ok) {
+                    detectMediaOrientation(result.img);
+                } else {
+                    const card = result.img.closest('.media-card');
+                    if (card) card.classList.add('is-loaded');
+                }
+
+                nextImageToReveal += 1;
+            }
+        }
+
+        function pumpSequentialImageQueue() {
+            while (activeSequentialLoads < MAX_PARALLEL_IMAGE_LOADS && sequentialImageQueue.length > 0) {
+                const img = sequentialImageQueue.shift();
+                if (!img || !img.dataset || !img.dataset.src || img.dataset.loadingStarted === '1') {
+                    continue;
+                }
+
+                img.dataset.loadingStarted = '1';
+                activeSequentialLoads += 1;
+
+                const done = () => {
+                    img.removeEventListener('load', done);
+                    img.removeEventListener('error', done);
+                    activeSequentialLoads = Math.max(0, activeSequentialLoads - 1);
+                    pumpSequentialImageQueue();
+                };
+
+                img.addEventListener('load', done, { once: true });
+                img.addEventListener('error', done, { once: true });
+                img.src = img.dataset.src;
+            }
+        }
+
+        function enqueueImageForSequentialLoad(img) {
+            if (!img || !img.dataset || !img.dataset.src) return;
+            if (img.dataset.loadingQueued === '1' || img.dataset.loadingStarted === '1') return;
+            img.dataset.loadingQueued = '1';
+            sequentialImageQueue.push(img);
+            pumpSequentialImageQueue();
+        }
+
+        function withThumbVariant(url, variantName) {
+            if (!url) return url;
+            if (url.includes('variant=')) {
+                return url.replace(/([?&])variant=[^&]*/i, `$1variant=${variantName}`);
+            }
+            const sep = url.includes('?') ? '&' : '?';
+            return `${url}${sep}variant=${variantName}`;
+        }
+
+        function buildGridThumbUrl(fileName) {
+            return buildThumbUrl(fileName, currentGridThumbVariant, 'auto');
+        }
+
+        function buildLqipThumbUrl(fileName) {
+            return buildThumbUrl(fileName, 'lqip', '');
+        }
+
+        function applyZoomBasedThumbVariant(forceReloadLoaded = false) {
+            const zoomVariant = getZoomBasedThumbVariant(gridZoomPointer);
+            const nextVariant = pickSmallerThumbVariant(zoomVariant, NETWORK_PROFILE.variant);
+            if (nextVariant === currentGridThumbVariant && !forceReloadLoaded) return;
+
+            currentGridThumbVariant = nextVariant;
+
+            document.querySelectorAll('.media-card img').forEach((img) => {
+                const card = img.closest('.media-card');
+                const fileName = card ? card.getAttribute('data-filename') : '';
+                if (!fileName) return;
+
+                const nextUrl = buildGridThumbUrl(fileName);
+                img.dataset.src = nextUrl;
+
+                // Optional refresh pentru imaginile deja incarcate, astfel zoom-ul schimba imediat calitatea ceruta.
+                if (forceReloadLoaded && img.dataset.loadingStarted === '1' && img.src !== nextUrl) {
+                    img.src = nextUrl;
+                }
+            });
+        }
+
+        function initSequentialLoadingForImage(img) {
+            if (!img) return;
+            if (!img.dataset.src) {
+                const card = img.closest('.media-card');
+                const fileName = card ? card.getAttribute('data-filename') : '';
+                if (fileName) {
+                    img.dataset.src = buildGridThumbUrl(fileName);
+                    img.dataset.lqip = buildLqipThumbUrl(fileName);
+                }
+            } else {
+                img.dataset.src = withThumbVariant(img.dataset.src, currentGridThumbVariant);
+            }
+
+            const card = img.closest('.media-card');
+            if (card && img.dataset.lqip) {
+                card.style.setProperty('--bg-url', `url("${img.dataset.lqip}")`);
+            }
+
+            if (!img.dataset.seq) {
+                img.dataset.seq = String(imageSequenceCounter++);
+            }
+
+            img.addEventListener('load', () => {
+                const seq = Number(img.dataset.seq || -1);
+                if (seq < 0) {
+                    detectMediaOrientation(img);
+                    return;
+                }
+                imageRevealBuffer.set(seq, { ok: true, img });
+                flushImagesInOrder();
+            }, { once: true });
+
+            img.addEventListener('error', () => {
+                const seq = Number(img.dataset.seq || -1);
+                if (seq < 0) {
+                    const card = img.closest('.media-card');
+                    if (card) card.classList.add('is-loaded');
+                    return;
+                }
+                imageRevealBuffer.set(seq, { ok: false, img });
+                flushImagesInOrder();
+            }, { once: true });
+
+            enqueueImageForSequentialLoad(img);
+        }
+
+        function initializeSequentialGalleryImages() {
+            const gallery = document.getElementById('main-gallery-v10');
+            if (!gallery) return;
+            gallery.querySelectorAll('.media-card img[data-src]').forEach((img) => initSequentialLoadingForImage(img));
+        }
+
+        function scheduleViewportWork() {
+            if (viewportActivityRaf) return;
+            viewportActivityRaf = window.requestAnimationFrame(() => {
+                viewportActivityRaf = 0;
+                maybeLoadMoreGalleryItems();
+            });
+        }
+
+        function syncAuxCardRatios() {
+            const folderAspect = hasProjectMedia ? dominantLandscapeRatio : '1 / 1';
+
+            document.querySelectorAll('.folder-media-card').forEach((card) => {
+                card.style.aspectRatio = folderAspect;
+            });
+
+            if (!hasProjectMedia) return;
+
+            document.querySelectorAll('.media-card.portrait-mode').forEach((card) => {
+                card.style.aspectRatio = dominantLandscapeRatio;
+            });
+        }
+
+        function hidePageLoader() {
+            const loader = document.getElementById('page-loader');
+            if (!loader || loader.dataset.hidden === '1') return;
+            loader.dataset.hidden = '1';
+            loader.classList.add('is-hidden');
+            document.body.classList.remove('page-loading');
+            setTimeout(() => {
+                if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+            }, 420);
+        }
+
+        function waitForAllGalleryImages(maxCount = null) {
+            const gallery = document.getElementById('main-gallery-v10');
+            if (!gallery) return Promise.resolve();
+
+            const allImages = Array.from(gallery.querySelectorAll('img'));
+            const images = Number.isFinite(maxCount) ? allImages.slice(0, maxCount) : allImages;
+            if (images.length === 0) return Promise.resolve();
+
+            const waits = images.map((img) => new Promise((resolve) => {
+                if (img.complete && img.naturalWidth > 0) {
+                    resolve();
+                    return;
+                }
+                const done = () => {
+                    img.removeEventListener('load', done);
+                    img.removeEventListener('error', done);
+                    resolve();
+                };
+                img.addEventListener('load', done, { once: true });
+                img.addEventListener('error', done, { once: true });
+            }));
+
+            return Promise.all(waits).then(() => undefined);
+        }
+
+        const fileManifest = {{ fisiere|tojson }};
+        const hasProjectMedia = fileManifest.length > 0;
+        const activeProjectFolder = "{{ folder_activ }}";
+        const isSystemOffline = {{ is_offline|tojson }};
+
+        function encodePath(pathValue) {
+            if (!pathValue) return '';
+            return String(pathValue)
+                .split('/')
+                .filter(Boolean)
+                .map((part) => encodeURIComponent(part))
+                .join('/');
+        }
+
+        function buildFolderUrl(pathValue) {
+            const encodedPath = encodePath(pathValue);
+            return encodedPath ? `/f/${encodedPath}` : '/gallery';
+        }
+
+        function buildMediaParamPath(fileName) {
+            return activeProjectFolder ? `${activeProjectFolder}/${fileName}` : fileName;
+        }
+
+        function buildThumbUrl(fileName, variantName, format = 'auto') {
+            const params = new URLSearchParams();
+            params.set('p', buildMediaParamPath(fileName));
+            if (variantName) params.set('variant', variantName);
+            if (format) params.set('fmt', format);
+            return `/thumb/?${params.toString()}`;
+        }
+
+        function buildMediaUrl(fileName) {
+            const params = new URLSearchParams();
+            params.set('p', buildMediaParamPath(fileName));
+            return `/media/?${params.toString()}`;
+        }
+
+        function toggleProjectsDrop(event) {
+            event.stopPropagation();
+            document.getElementById('projects-drop').classList.toggle('open');
+        }
+
+        function toggleMobileMenu(event) {
+            if (event) event.stopPropagation();
+            const drawer = document.getElementById('mobile-drawer');
+            const overlay = document.getElementById('mobile-drawer-overlay');
+            const willOpen = !drawer.classList.contains('open');
+            drawer.classList.toggle('open', willOpen);
+            overlay.classList.toggle('open', willOpen);
+            document.body.style.overflow = willOpen ? 'hidden' : 'auto';
+        }
+
+        function closeMobileMenu() {
+            const drawer = document.getElementById('mobile-drawer');
+            const overlay = document.getElementById('mobile-drawer-overlay');
+            drawer.classList.remove('open');
+            overlay.classList.remove('open');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.addEventListener('click', (event) => {
+            const el = document.getElementById('projects-drop');
+            if (el) el.classList.remove('open');
+
+            const drawer = document.getElementById('mobile-drawer');
+            const toggle = document.getElementById('mobile-menu-toggle');
+            if (!drawer || !toggle) return;
+            if (!drawer.contains(event.target) && !toggle.contains(event.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        function handleMediaInteraction(event, element, index) {
+            const isControlKeyHeld = event.ctrlKey || event.metaKey;
+            if (isSelectionModeActive || isControlKeyHeld) {
+                if (!isSelectionModeActive) toggleSelectionEngine();
+                const fileName = element.getAttribute('data-filename');
+                if (selectionMemoryStore.has(fileName)) {
+                    selectionMemoryStore.delete(fileName);
+                    element.classList.remove('is-selected');
+                } else {
+                    selectionMemoryStore.add(fileName);
+                    element.classList.add('is-selected');
+                }
+                updateSelectionUI();
+                return;
+            }
+            openMediaLightbox(index);
+        }
+
+        function toggleSelectionEngine() {
+            isSelectionModeActive = !isSelectionModeActive;
+            document.body.classList.toggle('selection-active', isSelectionModeActive);
+            document.getElementById('master-select-btn').classList.toggle('active-mode', isSelectionModeActive);
+            if (!isSelectionModeActive) {
+                selectionMemoryStore.clear();
+                document.querySelectorAll('.media-card').forEach(card => card.classList.remove('is-selected'));
+                updateSelectionUI();
+            }
+        }
+
+        function updateSelectionUI() {
+            document.getElementById('selection-count-label').innerText = selectionMemoryStore.size;
+        }
+
+        function adjustGridZoom(direction) {
+            gridZoomPointer = Math.max(0, Math.min(gridZoomSteps.length - 1, gridZoomPointer + direction));
+            document.documentElement.style.setProperty('--grid-size', `${gridZoomSteps[gridZoomPointer]}px`);
+            applyZoomBasedThumbVariant(false);
+        }
+
+        function detectMediaOrientation(img) {
+            const card = img.closest('.media-card');
+            if (!card) return;
+
+            card.style.setProperty('--bg-url', `url("${img.src}")`);
+            card.classList.add('is-loaded');
+
+            const rawWidth = img.naturalWidth || 0;
+            const rawHeight = img.naturalHeight || 0;
+
+            // Unele browsere pot raporta temporar 0x0 la re-decodare lazy; păstrăm orientarea curentă.
+            if (rawWidth < 2 || rawHeight < 2) {
+                return;
+            }
+
+            const width = rawWidth;
+            const height = rawHeight;
+
+            if (height > width) {
+                card.classList.add('portrait-mode');
+                card.classList.remove('landscape-mode');
+                card.style.aspectRatio = dominantLandscapeRatio;
+            } else {
+                card.classList.remove('portrait-mode');
+                card.classList.add('landscape-mode');
+                if (!isDominantRatioLocked) {
+                    dominantLandscapeRatio = `${width} / ${height}`;
+                    isDominantRatioLocked = true;
+                    syncAuxCardRatios();
+                }
+                card.style.aspectRatio = dominantLandscapeRatio;
+            }
+        }
+
+        function createMediaCard(fileName, index) {
+            const card = document.createElement('div');
+            card.className = 'media-card';
+            card.setAttribute('data-filename', fileName);
+            card.onclick = (event) => handleMediaInteraction(event, card, index);
+
+            const img = document.createElement('img');
+            img.dataset.src = buildGridThumbUrl(fileName);
+            img.dataset.lqip = buildLqipThumbUrl(fileName);
+            img.alt = fileName;
+            img.loading = 'lazy';
+            img.decoding = 'async';
+            card.appendChild(img);
+            initSequentialLoadingForImage(img);
+
+            if (/\.(mp4|mov|webm|avi|mkv)$/i.test(fileName)) {
+                const overlay = document.createElement('div');
+                overlay.style.cssText = 'position:absolute; inset:0; display:flex; align-items:center; justify-content:center; z-index:2;';
+                overlay.innerHTML = '<svg width="46" height="46" viewBox="0 0 24 24" fill="white" style="opacity:0.85;"><path d="M8 5v14l11-7z"/></svg>';
+                card.appendChild(overlay);
+            }
+
+            return card;
+        }
+
+        function loadNextGalleryBatch() {
+            if (isBatchLoading || loadedCardsCount >= fileManifest.length) return;
+
+            const gallery = document.getElementById('main-gallery-v10');
+            if (!gallery) return;
+
+            isBatchLoading = true;
+            const nextEnd = Math.min(loadedCardsCount + LOAD_BATCH_SIZE, fileManifest.length);
+            for (let i = loadedCardsCount; i < nextEnd; i += 1) {
+                gallery.appendChild(createMediaCard(fileManifest[i], i));
+            }
+            loadedCardsCount = nextEnd;
+            isBatchLoading = false;
+        }
+
+        function maybeLoadMoreGalleryItems() {
+            if (isBatchLoading || loadedCardsCount >= fileManifest.length) return;
+            if ((window.innerHeight + window.scrollY) < (document.body.offsetHeight - 900)) return;
+            loadNextGalleryBatch();
+        }
+
+        function openMediaLightbox(index) {
+            currentMediaIndex = index;
+            synchronizeLightboxDisplay();
+            document.getElementById('lightbox-engine-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            preloadLightboxNeighbors(currentMediaIndex);
+
+            // Push history state so device/browser back button can close the lightbox first.
+            if (!lightboxStatePushed) {
+                history.pushState({ lightboxOpen: true }, '');
+                lightboxStatePushed = true;
+            }
+        }
+
+        function synchronizeLightboxDisplay() {
+            const fileName = fileManifest[currentMediaIndex];
+            if (!fileName) return;
+            const isVideoFile = /\.(mp4|mov|webm|avi|mkv)$/i.test(fileName);
+            const imgElement = document.getElementById('lb-display-img');
+            const vidElement = document.getElementById('lb-display-vid');
+            const labelElement = document.getElementById('lb-display-filename');
+            const lightboxImagePath = buildThumbUrl(fileName, 'lightbox', 'auto');
+            const mediaPath = buildMediaUrl(fileName);
+
+            if (isVideoFile) {
+                imgElement.style.display = 'none';
+                vidElement.style.display = 'block';
+                vidElement.src = mediaPath;
+                vidElement.play().catch(() => {});
+            } else {
+                vidElement.pause();
+                vidElement.src = '';
+                vidElement.style.display = 'none';
+                imgElement.style.display = 'block';
+
+                const cachedLightboxUrl = lightboxPreloadCache.get(lightboxImagePath);
+                if (cachedLightboxUrl) {
+                    imgElement.src = cachedLightboxUrl;
+                } else {
+                    // Fallback imediat pe varianta de grid pana cand varianta lightbox e gata.
+                    imgElement.src = buildGridThumbUrl(fileName);
+
+                    const preload = new Image();
+                    preload.decoding = 'async';
+                    preload.src = lightboxImagePath;
+                    preload.onload = () => {
+                        lightboxPreloadCache.set(lightboxImagePath, lightboxImagePath);
+                        if (fileManifest[currentMediaIndex] === fileName) {
+                            imgElement.src = lightboxImagePath;
+                        }
+                    };
+                }
+            }
+
+            labelElement.innerText = fileName.replace(/_/g, ' ').replace(/\.[^.]+$/, '');
+        }
+
+        function preloadLightboxNeighbors(centerIndex) {
+            if (!fileManifest.length) return;
+
+            for (let step = 1; step <= LIGHTBOX_PRELOAD_AHEAD; step += 1) {
+                const nextIdx = (centerIndex + step) % fileManifest.length;
+                const prevIdx = (centerIndex - step + fileManifest.length) % fileManifest.length;
+                [nextIdx, prevIdx].forEach((idx) => {
+                    const candidate = fileManifest[idx];
+                    if (!candidate || /\.(mp4|mov|webm|avi|mkv)$/i.test(candidate)) return;
+                    const url = buildThumbUrl(candidate, 'lightbox', 'auto');
+                    if (lightboxPreloadCache.has(url)) return;
+
+                    const img = new Image();
+                    img.decoding = 'async';
+                    img.src = url;
+                    img.onload = () => {
+                        lightboxPreloadCache.set(url, url);
+                        // Limit simple cache growth in very large galleries.
+                        if (lightboxPreloadCache.size > 120) {
+                            const firstKey = lightboxPreloadCache.keys().next().value;
+                            if (firstKey) lightboxPreloadCache.delete(firstKey);
+                        }
+                    };
+                });
+            }
+        }
+
+        function navigateMedia(direction) {
+            if (!fileManifest.length) return;
+            currentMediaIndex = (currentMediaIndex + direction + fileManifest.length) % fileManifest.length;
+            synchronizeLightboxDisplay();
+            preloadLightboxNeighbors(currentMediaIndex);
+        }
+
+        function closeMediaLightbox() {
+            const modal = document.getElementById('lightbox-engine-modal');
+            if (modal.style.display !== 'flex') return;
+
+            const video = document.getElementById('lb-display-vid');
+            video.pause();
+            video.src = '';
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+
+            // If state was pushed for lightbox, consume it on close.
+            if (lightboxStatePushed) {
+                lightboxStatePushed = false;
+                if (history.state && history.state.lightboxOpen) {
+                    history.back();
+                }
+            }
+        }
+
+        function initLightboxSwipe() {
+            const stage = document.getElementById('lightbox-stage');
+            if (!stage) return;
+
+            let startX = 0;
+            let startY = 0;
+            let deltaX = 0;
+            let deltaY = 0;
+            let lastTapAt = 0;
+
+            stage.addEventListener('touchstart', (event) => {
+                const touch = event.changedTouches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+                deltaX = 0;
+                deltaY = 0;
+            }, { passive: true });
+
+            stage.addEventListener('touchmove', (event) => {
+                const touch = event.changedTouches[0];
+                deltaX = touch.clientX - startX;
+                deltaY = touch.clientY - startY;
+            }, { passive: true });
+
+            stage.addEventListener('touchend', () => {
+                const absX = Math.abs(deltaX);
+                const absY = Math.abs(deltaY);
+
+                // Swipe down to close the lightbox.
+                if (absY > 80 && absY > absX && deltaY > 0) {
+                    closeMediaLightbox();
+                    return;
+                }
+
+                // Trigger doar pentru glisare orizontala clara.
+                if (absX < 45 || absX <= absY) return;
+
+                if (deltaX < 0) navigateMedia(1);
+                if (deltaX > 0) navigateMedia(-1);
+            }, { passive: true });
+
+            // Double tap anywhere on stage closes lightbox quickly.
+            stage.addEventListener('touchend', () => {
+                const now = Date.now();
+                if (now - lastTapAt < 280) {
+                    closeMediaLightbox();
+                }
+                lastTapAt = now;
+            }, { passive: true });
+
+            // Desktop/laptop quick close.
+            stage.addEventListener('dblclick', () => closeMediaLightbox());
+        }
+
+        function toggleTutorialModal() {
+            const modal = document.getElementById('tutorial-modal-view');
+            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        async function initiateZipDownloadProcess() {
+            if (selectionMemoryStore.size === 0) return;
+            const payload = { files: Array.from(selectionMemoryStore), folder: activeProjectFolder };
+            try {
+                const response = await fetch('/download_selection', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) return;
+                const blob = await response.blob();
+                const downloadUrl = window.URL.createObjectURL(blob);
+                const anchor = document.createElement('a');
+                anchor.href = downloadUrl;
+                anchor.download = `pachet_media_${activeProjectFolder.replace(/[\\/]/g, '_')}.zip`;
+                anchor.click();
+            } catch (error) {
+                console.error('Download error:', error);
+            }
+        }
+
+        function openUnlockModal() {
+            document.getElementById('unlock-modal').style.display = 'flex';
+        }
+
+        function closeUnlockModal() {
+            document.getElementById('unlock-modal').style.display = 'none';
+        }
+
+        document.getElementById('unlock-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const key = document.getElementById('access_key').value;
+            fetch('/api/unlock-folder', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({access_key: key})
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === 'success' && data.folder) {
+                    window.location.href = buildFolderUrl(data.folder);
+                    return;
+                }
+                const err = document.getElementById('unlock-error');
+                err.innerText = '{{ _("Incorrect access key!") }}';
+                err.classList.add('show');
+            })
+            .catch(() => {
+                const err = document.getElementById('unlock-error');
+                err.innerText = '{{ _("Unlock error. Please try again.") }}';
+                err.classList.add('show');
+            });
+        });
+
+        function changeLanguage(langCode) {
+            window.location.href = '/set-language/' + langCode;
+        }
+
+        document.addEventListener('keydown', (event) => {
+            const isLightboxOpen = document.getElementById('lightbox-engine-modal').style.display === 'flex';
+            if (isLightboxOpen && event.key === 'ArrowRight') navigateMedia(1);
+            if (isLightboxOpen && event.key === 'ArrowLeft') navigateMedia(-1);
+            if (isLightboxOpen && event.key === 'Backspace') {
+                event.preventDefault();
+                closeMediaLightbox();
+            }
+            if (event.key === 'Escape') {
+                closeMediaLightbox();
+                if (document.getElementById('tutorial-modal-view').style.display === 'flex') toggleTutorialModal();
+                if (document.getElementById('unlock-modal').style.display === 'flex') closeUnlockModal();
+                closeMobileMenu();
+            }
+            if ((event.ctrlKey || event.metaKey) && (event.key === '+' || event.key === '=')) {
+                event.preventDefault();
+                adjustGridZoom(1);
+            }
+            if ((event.ctrlKey || event.metaKey) && (event.key === '-' || event.key === '_')) {
+                event.preventDefault();
+                adjustGridZoom(-1);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if ({{ 'true' if show_unlock_modal else 'false' }}) {
+                openUnlockModal();
+            }
+
+            initLightboxSwipe();
+            syncAuxCardRatios();
+            applyZoomBasedThumbVariant(false);
+            initializeSequentialGalleryImages();
+            maybeLoadMoreGalleryItems();
+
+            // Hide loader after initial content is ready, not after entire gallery.
+            waitForAllGalleryImages(8).then(hidePageLoader);
+
+            window.addEventListener('resize', scheduleViewportWork, { passive: true });
+        });
+
+        window.addEventListener('load', hidePageLoader);
+        setTimeout(hidePageLoader, 12000);
+
+        window.addEventListener('popstate', () => {
+            const isLightboxOpen = document.getElementById('lightbox-engine-modal').style.display === 'flex';
+            if (isLightboxOpen) {
+                lightboxStatePushed = false;
+                closeMediaLightbox();
+            }
+        });
+
+        
+    </script>
+
+  
+</body>
+</html>
