@@ -1,0 +1,21 @@
+{
+  "name": "Prissma Studio Gallery",
+  "short_name": "Prissma",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050506",
+  "theme_color": "#0a0a0f",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/static/img/Untitled design - 2.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/img/Untitled design - 2.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{{ _('Gallery Pro - Prissma Studio') }}</title>
+    
+<!-- PWA & Mobile App Meta Tags -->
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#08080c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Prissma">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/Untitled design - 2.png') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -851,6 +860,24 @@
     transform: translateY(-50%);
     font-size: 22px;
     color: #6366f1;
+
+
+    /* --- SKELETON LOADING ANIMATION --- */
+        @keyframes skeletonShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Aplicăm efectul luminos doar pe cardurile care încă nu au primit clasa is-loaded */
+        .media-card:not(.is-loaded) {
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.03) 25%, 
+                rgba(255, 255, 255, 0.09) 50%, 
+                rgba(255, 255, 255, 0.03) 75%
+            ) !important;
+            background-size: 400% 100% !important;
+            animation: skeletonShimmer 1.5s ease-in-out infinite !important;
+        }
 }
     </style>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/site-refresh.css') }}">
@@ -1621,11 +1648,14 @@
                 vidElement.style.display = 'none';
                 imgElement.style.display = 'block';
 
+                // LOGICĂ NOUĂ PENTRU ZERO LATENCY:
                 const cachedLightboxUrl = lightboxPreloadCache.get(lightboxImagePath);
+                
                 if (cachedLightboxUrl) {
+                    // Dacă poza este deja descărcată de funcția de preload, o afișăm DIRECT, fără asincron.
                     imgElement.src = cachedLightboxUrl;
                 } else {
-                    // Fallback imediat pe varianta de grid pana cand varianta lightbox e gata.
+                    // Doar dacă poza NU este gata (ex: primul click), afișăm thumbnail-ul temporar și o cerem în fundal.
                     imgElement.src = buildGridThumbUrl(fileName);
 
                     const preload = new Image();
@@ -1633,6 +1663,7 @@
                     preload.src = lightboxImagePath;
                     preload.onload = () => {
                         lightboxPreloadCache.set(lightboxImagePath, lightboxImagePath);
+                        // Ne asigurăm că utilizatorul nu a dat swipe mai departe între timp
                         if (fileManifest[currentMediaIndex] === fileName) {
                             imgElement.src = lightboxImagePath;
                         }
@@ -1750,31 +1781,40 @@
             stage.addEventListener('dblclick', () => closeMediaLightbox());
         }
 
+        
         function toggleTutorialModal() {
             const modal = document.getElementById('tutorial-modal-view');
             modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
         }
 
         async function initiateZipDownloadProcess() {
-            if (selectionMemoryStore.size === 0) return;
-            const payload = { files: Array.from(selectionMemoryStore), folder: activeProjectFolder };
-            try {
-                const response = await fetch('/download_selection', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                });
-                if (!response.ok) return;
-                const blob = await response.blob();
-                const downloadUrl = window.URL.createObjectURL(blob);
-                const anchor = document.createElement('a');
-                anchor.href = downloadUrl;
-                anchor.download = `pachet_media_${activeProjectFolder.replace(/[\\/]/g, '_')}.zip`;
-                anchor.click();
-            } catch (error) {
-                console.error('Download error:', error);
-            }
-        }
+    if (selectionMemoryStore.size === 0) return;
+    const payload = { files: Array.from(selectionMemoryStore), folder: activeProjectFolder };
+    try {
+        const response = await fetch('/download_selection', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) return;
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = downloadUrl;
+        anchor.download = `pachet_media_${activeProjectFolder.replace(/[\\/]/g, '_')}.zip`;
+        anchor.click();
+
+        // --- REPARAȚIA AICI ---
+        // Așteptăm 1.5 secunde după ce s-a dat click pe download, apoi afișăm fereastra
+        setTimeout(() => {
+            showReviewModal();
+        }, 1500);
+        // -----------------------
+
+    } catch (error) {
+        console.error('Download error:', error);
+    }
+}
 
         function openUnlockModal() {
             document.getElementById('unlock-modal').style.display = 'flex';
@@ -1868,6 +1908,22 @@
         
     </script>
 
+<!-- Fereastra Review (Adăugată) -->
+<div id="review-modal-view" class="modal-engine-view" onclick="closeReviewModal()">
+    <div class="status-msg-square-box" onclick="event.stopPropagation()" style="text-align: center;">
+        <h2 style="color: var(--acc); margin:0 0 12px;">{{ _('Îți plac pozele?') }}</h2>
+        <p style="color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 20px;">
+            {{ _('Părerea ta contează mult pentru noi. Ne-ar ajuta enorm un review pe Google!') }}
+        </p>
+        <div style="font-size: 30px; margin-bottom: 20px;">⭐⭐⭐⭐⭐</div>
+        <a href="URL_GOOGLE_REVIEW_AICI" target="_blank" class="header-capsule active-mode" style="width:100%; display: inline-flex; margin-bottom: 10px;">
+            {{ _('Lasă un Review') }}
+        </a>
+        <button class="header-capsule" style="width:100%; background: transparent; border: 1px solid rgba(255,255,255,0.2);" onclick="closeReviewModal()">
+            {{ _('Poate mai târziu') }}
+        </button>
+    </div>
+</div>
   
 </body>
 </html>
