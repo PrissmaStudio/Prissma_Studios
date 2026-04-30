@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ _('Welcome - Prissma Studio') }}</title>
+    <link rel="preload" as="video" href="{{ url_for('static', filename='video/optimized/background.webm') }}" type="video/webm">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <style>
+        /* Eliminăm header-ul doar pe această pagină */
+        header {
+            display: none !important;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Ocupă tot ecranul acum că nu avem header */
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            margin-top: 0 !important; /* Anulăm marginea de 100px din style.css */
+        }
+
+        .hero-logo {
+            max-width: 340px;
+            width: min(72vw, 340px);
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @media (max-width: 768px) {
+            .hero-logo {
+                max-width: 280px;
+                width: min(78vw, 280px);
+            }
+        }
+        
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.3;
+            transform: translateZ(0);
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            contain: paint;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .btn-welcome {
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .btn-explore {
+            background: var(--acc);
+            color: #fff;
+        }
+
+        .btn-explore:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(66, 133, 244, 0.3);
+        }
+
+        .btn-about {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-about:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Hide title and description text - keep only logo and buttons */
+        .hero h1,
+        .hero > p {
+            display: none !important;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/site-refresh.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile-ux.css') }}">
+    <script defer src="{{ url_for('static', filename='js/mobile-ux.js') }}"></script>
+</head>
+
+<body class="welcome-page">
+
+    <video class="video-background" autoplay loop muted playsinline preload="auto" disablepictureinpicture>
+    <source src="{{ url_for('static', filename='video/optimized/background.webm') }}" type="video/webm">
+    Browserul tău nu suportă video.
+</video>
+
+    <div id="loader-wrapper">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <main class="hero">
+        <img src="{{ url_for('static', filename='img/optimized/Untitled design - 2.webp') }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='img/Untitled design - 2.png') }}';" class="hero-logo" alt="Prissma Studio">
+        
+        <h1 style="font-size: 2.5rem; margin-bottom: 10px; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+            {{ _('Welcome to Prissma Studio') }}
+        </h1>
+        
+        <p style="font-size: 1.2rem; margin-bottom: 40px; color: rgba(255,255,255,0.8); max-width: 600px; line-height: 1.6;">
+            {{ _('Professional Photography & Videography') }}
+        </p>
+        
+        <p style="font-size: 1rem; margin-bottom: 30px; color: rgba(255,255,255,0.7); max-width: 500px; line-height: 1.5;">
+            {{ _('Discover our portfolio of stunning images and videos') }}
+        </p>
+        
+        <div class="button-container">
+            <a href="/gallery" class="btn-welcome btn-explore">
+                {{ _('View Gallery') }}
+            </a>
+            
+            <a href="/about" class="btn-welcome btn-about">
+                {{ _('About') }}
+            </a>
+        </div>
+    </main>
+
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loader = document.getElementById('loader-wrapper');
+        if (loader) loader.style.display = 'none';
+
+        const video = document.querySelector('.video-background');
+        if (!video) return;
+
+        video.muted = true;
+        video.defaultMuted = true;
+        video.playsInline = true;
+
+        // Evita playback agresiv pe dispozitive care prefera reducerea miscarii.
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduceMotion) {
+            video.pause();
+            return;
+        }
+
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(() => {
+                document.body.addEventListener('click', () => {
+                    video.play().catch(() => {});
+                }, { once: true });
+            });
+        }
+
+        // Reduce stutter cand tab-ul nu e activ si reia smooth la revenire.
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                video.pause();
+                return;
+            }
+            video.play().catch(() => {});
+        });
+
+        video.addEventListener('error', () => {
+            // Daca stream-ul rateaza temporar, reincercam aceeasi sursa webm.
+            video.load();
+            video.play().catch(() => {});
+        });
+    });
+</script>
+
+
+</body>
+</html>

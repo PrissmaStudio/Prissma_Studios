@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ _('Review') }} - Prissma Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --acc: #4285f4;
+            --bg-dark: #08080c;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --txt: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            color: var(--txt);
+            font-family: 'Segoe UI', 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .review-fullscreen-container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(20, 20, 30, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 50px 60px;
+            border-radius: 6px;
+            animation: slideIn 0.4s ease-out;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .review-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid rgba(66, 133, 244, 0.2);
+        }
+
+        .review-client {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .review-client-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--txt);
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .review-client-email {
+            font-size: 14px;
+            color: var(--acc);
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            opacity: 0.9;
+        }
+
+        .review-meta {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .review-meta-item {
+            font-size: 13px;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .review-meta-item strong {
+            opacity: 0.5;
+            color: var(--txt);
+            display: block;
+            margin-bottom: 4px;
+            font-size: 11px;
+        }
+
+        .review-rating {
+            margin-top: 5px;
+        }
+
+        .rating-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            opacity: 0.5;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .stars {
+            font-size: 22px;
+            color: #ffc107;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        .review-body {
+            margin-bottom: 40px;
+        }
+
+        .review-body-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            opacity: 0.45;
+            margin-bottom: 20px;
+            display: block;
+            font-weight: 700;
+        }
+
+        .review-comment {
+            font-size: 16px;
+            line-height: 2;
+            opacity: 0.92;
+            color: var(--txt);
+            background: rgba(255, 255, 255, 0.02);
+            padding: 35px 40px;
+            border-left: 4px solid var(--acc);
+            border-radius: 0 4px 4px 0;
+            font-family: 'Georgia', 'Segoe UI', serif;
+            letter-spacing: 0.3px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            white-space: normal;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        .review-footer {
+            display: flex;
+            gap: 15px;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--txt);
+            font-family: inherit;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background: var(--acc);
+            border-color: var(--acc);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(66, 133, 244, 0.3);
+        }
+
+        .btn-primary {
+            background: var(--acc);
+            border-color: var(--acc);
+        }
+
+        .btn-primary:hover {
+            background: rgba(66, 133, 244, 0.8);
+            box-shadow: 0 10px 25px rgba(66, 133, 244, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .review-fullscreen-container {
+                padding: 35px 25px;
+                max-width: 100%;
+                margin-top: 10px;
+            }
+
+            .review-header {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                margin-bottom: 35px;
+            }
+
+            .review-client-name {
+                font-size: 24px;
+            }
+
+            .review-comment {
+                padding: 25px 20px;
+                font-size: 15px;
+                line-height: 1.9;
+            }
+
+            .review-footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                padding: 12px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .review-fullscreen-container {
+                padding: 25px 15px;
+            }
+
+            .review-header {
+                gap: 15px;
+            }
+
+            .review-client-name {
+                font-size: 20px;
+            }
+
+            .review-comment {
+                padding: 20px 15px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/site-refresh.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile-ux.css') }}">
+    <script defer src="{{ url_for('static', filename='js/mobile-ux.js') }}"></script>
+</head>
+<body>
+
+<div class="review-fullscreen-container">
+    <div class="review-header">
+        <div class="review-client">
+            <div class="review-client-name">{{ review.name }}</div>
+            <div class="review-client-email">{{ review.email }}</div>
+        </div>
+        <div class="review-meta">
+            <div class="review-meta-item">
+                <strong>{{ _('Project') }}</strong>
+                {{ review.folder|replace('_', ' ')|upper }}
+            </div>
+            <div class="review-meta-item">
+                <strong>{{ _('Date') }}</strong>
+                {{ review.date }}
+            </div>
+            <div class="review-rating">
+                <span class="rating-label">{{ _('Rating') }}</span>
+                <div class="stars">
+                    {% for i in range(review.rating) %}★{% endfor %}
+                    {% for i in range(5 - review.rating) %}☆{% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="review-body">
+        <span class="review-body-title">{{ _('Message') }}</span>
+        <div class="review-comment">
+            {{ review.comment }}
+        </div>
+    </div>
+
+    <div class="review-footer">
+        <button class="btn" onclick="window.history.back()">← {{ _('Back') }}</button>
+        <a href="/admin/all-reviews" class="btn btn-primary">{{ _('All Reviews') }}</a>
+    </div>
+</div>
+
+</body>
+</html>
