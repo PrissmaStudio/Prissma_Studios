@@ -19,14 +19,22 @@ from werkzeug.utils import secure_filename
 import zipfile
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
-
+from sqlalchemy import event
+from sqlalchemy.engine import Engine
 
 
 load_dotenv()
 
 app = Flask(__name__)
+
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["500 per day", "100 per hour"],
+    storage_uri="memory://" # Ține minte IP-urile și încercările în memoria RAM
+)
+
 app.secret_key = os.getenv('SECRET_KEY', 'prissma_ultimate_v2026')
-gemini_model = None  # <--- ADAUGĂ ACEASTĂ LINIE
 
 app.secret_key = os.getenv('SECRET_KEY', 'prissma_ultimate_v2026')
 ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'admin123')
@@ -56,6 +64,17 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     }
 }
 db = SQLAlchemy(app)
+
+@event.listens_for(Engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    cursor = dbapi_connection.cursor()
+    # Activează Write-Ahead Logging (permite citiri și scrieri paralele)
+    cursor.execute("PRAGMA journal_mode=WAL")
+    # Optimizează viteza de scriere pe disc
+    cursor.execute("PRAGMA synchronous=NORMAL")
+    # Spune-i să aștepte 5 secunde dacă baza e ocupată, în loc să dea crash instantaneu
+    cursor.execute("PRAGMA busy_timeout=5000")
+    cursor.close()
 
 # Configurare Babel pentru internaționalizare
 app.config['BABEL_DEFAULT_LOCALE'] = 'ro'
@@ -451,10 +470,10 @@ def is_best_folder(folder_name):
 
 
 def translate_best_folder_name(folder_name):
-    normalized = normalize_folder_name(folder_name)
-    if normalized == BEST_FOLDER_ALIAS:
-        return ''
-    return normalized
+    return normalize_folder_name(folder_name)
+
+def _translate_best_path(p):
+    return p
 
 
 def _folder_cookie_key(folder_name):
@@ -629,19 +648,6 @@ def list_folder_media(folder_name, base_dir=None):
     if normalized is None:
         return []
 
-    # === SPECIAL: folderul fizic static/best ===
-    if normalized.lower() == 'best':
-        if os.path.exists(BEST_STATIC_FOLDER) and os.path.isdir(BEST_STATIC_FOLDER):
-            files = []
-            for f in sorted(os.listdir(BEST_STATIC_FOLDER)):
-                full_path = os.path.join(BEST_STATIC_FOLDER, f)
-                if f.startswith('.') or not os.path.isfile(full_path):
-                    continue
-                if f.lower().endswith(('.jpg', '.jpeg', '.png', '.webp', '.heic', '.heif', '.mp4', '.mov', '.avi', '.mkv')):
-                    files.append(f)
-            return files
-        return []
-
     # Offline mode
     if is_offline_mode():
         target = os.path.join(get_base_dir(), normalized)
@@ -657,7 +663,6 @@ def list_folder_media(folder_name, base_dir=None):
     files = []
     seen = set()
 
-    # 1. Sursa principală (HDD dacă e conectat)
     primary_base = base_dir if base_dir is not None else get_base_dir()
     target = os.path.join(primary_base, normalized)
     if os.path.exists(target) and is_safe_path(primary_base, target):
@@ -669,7 +674,6 @@ def list_folder_media(folder_name, base_dir=None):
                 files.append(f)
                 seen.add(f.lower())
 
-    # 2. MERGE cu folderele locale din static/uploads (fix bug HDD)
     if primary_base != LOCAL_FOLDER and os.path.exists(LOCAL_FOLDER):
         local_target = os.path.join(LOCAL_FOLDER, normalized)
         if os.path.exists(local_target) and is_safe_path(LOCAL_FOLDER, local_target):
@@ -866,158 +870,36 @@ def optimize_existing_media_assets(force=False):
 
 def start_media_optimization_warmup():
     def _worker():
+        import time
+        import os
+        
+        # Așteptăm 2 secunde să pornească toți workerii Gunicorn
+        time.sleep(2)
+        
+        # Creăm un "semafor" ca să ne asigurăm că un singur worker face treaba
+        lock_file = os.path.join(get_base_dir(), '.warmup_lock')
+        
+        # Dacă fișierul există și a fost creat recent (în ultimele 60 de sec), alt worker deja lucrează
+        if os.path.exists(lock_file) and (time.time() - os.path.getmtime(lock_file) < 60):
+            return 
+            
         try:
+            # Blocăm accesul celorlalți workeri
+            with open(lock_file, 'w') as f:
+                f.write('ocupat')
+                
             with app.app_context():
-                optimize_existing_media_assets(force=False)
+                print("🔄 [Worker Principal] Scanare poze și generare cache...")
+                cache.clear()
+                _prebuild_all_gallery_thumbs()
+                print("✅ Scanare și cache complet!")
         except Exception as exc:
-            logger.warning(f"Media optimization warmup failed: {exc}")
-
+            print(f"⚠️ Eroare la cache: {exc}")
+            
     threading.Thread(target=_worker, daemon=True).start()
 
-def generate_ai_description(file_path, detailed=False):
-    """Generează titlu + tags cu Gemini. 
-    detailed=True → folosit pentru butonul de analiză (descriere mai lungă)"""
-    if not gemini_model or not os.path.exists(file_path):
-        return "Descriere indisponibilă (AI dezactivat)", []
 
-    try:
-        is_vid = is_video(file_path)
-        
-        if is_vid:
-            # Pentru video extragem un frame reprezentativ
-            temp_frame = os.path.join(os.getcwd(), 'misc_data', 'temp_ai_frame.jpg')
-            os.makedirs(os.path.dirname(temp_frame), exist_ok=True)
-            subprocess.run([
-                'ffmpeg', '-y', '-i', file_path, '-ss', '00:00:02', '-vframes', '1', temp_frame
-            ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
-            file_to_upload = genai.upload_file(temp_frame)
-            prompt_base = "Aceasta este o captură dintr-un video. "
-        else:
-            file_to_upload = genai.upload_file(file_path)
-            prompt_base = ""
 
-        if detailed:
-            prompt = f"""{prompt_base}Analizează această imagine/video în detaliu. 
-Răspunde în română cu:
-1. Un titlu atractiv (max 70 caractere)
-2. O descriere completă (2-4 propoziții)
-3. 8-12 tags relevante (separate prin virgulă)
-
-Format exact:
-Titlu: ...
-Descriere: ...
-Tags: tag1, tag2, ..."""
-        else:
-            prompt = f"""{prompt_base}Descrie această imagine/video foarte concis. 
-Răspunde DOAR cu:
-Titlu scurt (max 60 caractere) urmat de virgulă și 6-10 tags relevante.
-Exemplu: Apus spectaculos pe mare, plajă, vară, relaxare, orange sky, sunset, waves"""
-
-        response = gemini_model.generate_content([prompt, file_to_upload])
-        text = response.text.strip()
-
-        # Parsare simplă
-        lines = text.split('\n')
-        title = "Fără titlu"
-        description = ""
-        tags = []
-
-        for line in lines:
-            line = line.strip()
-            if line.startswith("Titlu:") or line.startswith("Title:"):
-                title = line.split(":", 1)[1].strip()
-            elif line.startswith("Descriere:") or line.startswith("Description:"):
-                description = line.split(":", 1)[1].strip()
-            elif line.startswith("Tags:"):
-                tags_str = line.split(":", 1)[1].strip()
-                tags = [t.strip() for t in tags_str.split(',') if t.strip()]
-
-        if not tags and ',' in text:
-            parts = text.split(',', 1)
-            title = parts[0].strip()
-            tags = [t.strip() for t in parts[1].split(',') if t.strip()]
-
-        # Curățare fișier temporar
-        if is_vid and 'temp_frame' in locals() and os.path.exists(temp_frame):
-            try: os.remove(temp_frame)
-            except: pass
-
-        return title, description, tags
-
-    except Exception as e:
-        logger.error(f"Gemini error pentru {os.path.basename(file_path)}: {e}")
-        return "Analiză AI eșuată", "", []
-
-    finally:
-        # Cleanup
-        pass
-
-def ai_smart_search(folder_name, query, max_results=30):
-    """Căutare inteligentă cu Gemini - returnează fișierele cele mai relevante"""
-    if not gemini_model:
-        return []
-
-    if not query or len(query.strip()) < 3:
-        return []
-
-    folder_name = normalize_folder_name(folder_name) or ''
-    base = get_base_dir()
-    target_dir = os.path.join(base, folder_name) if folder_name else base
-
-    if not os.path.isdir(target_dir):
-        return []
-
-    all_media = list_folder_media(folder_name)
-    if not all_media:
-        return []
-
-    # Limităm la maxim 50 fișiere pentru performanță (putem crește dacă ai GPU puternic)
-    files_to_analyze = all_media[:50]
-
-    try:
-        parts = [f"Caută fișiere care se potrivesc cu: '{query}'.\n\n"]
-        parts.append("Lista de fișiere disponibile (nume + scurtă descriere dacă există):\n")
-
-        for fname in files_to_analyze:
-            file_path = os.path.join(target_dir, fname)
-            if not os.path.exists(file_path):
-                continue
-
-            # Pentru viteză, analizăm doar primele 15 fișiere cu conținut real
-            if len(parts) < 18:   # ~15 fișiere + header
-                title, desc, tags = generate_ai_description(file_path, detailed=False)
-                desc_str = f" - {title}. Tags: {', '.join(tags[:6])}" if title else ""
-                parts.append(f"- {fname}{desc_str}")
-            else:
-                parts.append(f"- {fname}")
-
-        prompt = "".join(parts) + f"\n\nReturnează DOAR o listă de nume de fișiere (exact cum apar mai sus) care se potrivesc cel mai bine cu cererea '{query}'. Maxim {max_results} fișiere, sortate de la cel mai relevant la cel mai puțin relevant. Dacă nu găsești nimic relevant, returnează 'NONE'."
-
-        response = gemini_model.generate_content(prompt)
-        result_text = response.text.strip()
-
-        if "NONE" in result_text.upper() or not result_text:
-            return []
-
-        # Extragem numele fișierelor din răspuns
-        matched = []
-        for line in result_text.split('\n'):
-            line = line.strip()
-            if line.startswith('-'):
-                line = line[1:].strip()
-            for f in files_to_analyze:
-                if f.lower() in line.lower() and f not in matched:
-                    matched.append(f)
-                    if len(matched) >= max_results:
-                        break
-            if len(matched) >= max_results:
-                break
-
-        return matched[:max_results]
-
-    except Exception as e:
-        logger.error(f"AI Smart Search error: {e}")
-        return []
 # --- FOLDER SECURITY FUNCTIONS ---
 def load_folder_security(force_refresh=False):
     """Încarcă configurația de securitate a folderelor din baza de date"""
@@ -1191,32 +1073,27 @@ def about(): return render_template('about.html')
 @app.route('/f/')
 @app.route('/f/<path:folder_name>')
 def gallery(folder_name=None):
-    # Default: arată static/best când apeși Gallery din index
+    base = get_base_dir()
+
+    # 1. Logică de portofoliu principal: dacă intră pe /gallery, deschide direct folderul Best
     if folder_name is None:
-        if os.path.exists(BEST_STATIC_FOLDER):
+        if os.path.isdir(os.path.join(base, 'Best')):
+            selected = 'Best'
+        elif os.path.isdir(os.path.join(base, 'best')):
             selected = 'best'
-            base = BEST_STATIC_FOLDER
         else:
             selected = ''
-            base = LOCAL_FOLDER if os.path.exists(LOCAL_FOLDER) else get_base_dir()
     else:
         selected = normalize_folder_name(folder_name)
         if selected is None:
             return "Invalid folder", 400
-        if selected == 'best':
-            base = BEST_STATIC_FOLDER
-        else:
-            base = get_base_dir()
 
-    if selected == 'best':
-        selected_path = BEST_STATIC_FOLDER
-    else:
-        selected_path = os.path.join(base, selected) if selected else base
+    selected_path = os.path.join(base, selected) if selected else base
 
+    # Fallback la HDD offline
     if not os.path.isdir(selected_path):
         alt_base = LOCAL_FOLDER if base != LOCAL_FOLDER else get_base_dir()
-        alt_selected = '' if selected == 'best' else selected
-        alt_path = os.path.join(alt_base, alt_selected) if alt_selected else alt_base
+        alt_path = os.path.join(alt_base, selected) if selected else alt_base
         if os.path.isdir(alt_path):
             base = alt_base
             selected_path = alt_path
@@ -1224,50 +1101,25 @@ def gallery(folder_name=None):
     security = load_folder_security()
     request_cookies = request.cookies if has_request_context() else {}
 
-    is_main_gallery = (folder_name is None and selected != 'best')
-    best_folder_available = False
-    best_folder_count = 0
-    if is_main_gallery:
-        root_files = list_folder_media('best' if os.path.exists(BEST_STATIC_FOLDER) else '')
-        best_folder_available = len(root_files) > 0
-        best_folder_count = len(root_files)
-
-    if not os.path.isdir(selected_path):
-        accessible_folders = list_accessible_folders()
-        if accessible_folders:
-            selected = accessible_folders[0]
-            selected_path = os.path.join(base, selected)
-        else:
-            selected = ''
-            selected_path = base
-
-    if is_offline_mode() and selected and not os.path.exists(selected_path):
-        folders = list_accessible_folders()
-        if folders:
-            selected = folders[0]
-            selected_path = os.path.join(base, selected)
-
     is_protected = security.get(selected, {}).get('is_protected', False)
     has_access = user_has_access(selected, security=security, cookies=request_cookies)
 
-    if selected == 'best':
-        subfolders = []
-    else:
-        subfolders = list_direct_subfolders(selected)
-
+    subfolders = list_direct_subfolders(selected)
     breadcrumbs = build_folder_breadcrumbs(selected)
-    project_root = '' if selected == 'best' else (selected.split('/')[0] if selected else '')
+    # Afișează scurtătura către proiect doar dacă suntem adânc într-un subfolder, nu la rădăcină
+    project_root = selected.split('/')[0] if selected and '/' in selected else ''
 
     if is_protected and not has_access:
         fisiere_data = []
         is_empty = len(subfolders) == 0
         show_unlock_modal = True
     else:
-        fisiere_data = list_folder_media('best' if selected == 'best' else selected)
+        fisiere_data = list_folder_media(selected)
         is_empty = (len(fisiere_data) == 0 and len(subfolders) == 0)
         show_unlock_modal = False
 
     initial_batch_size = 10000
+    
     return render_template('index.html',
         fisiere=fisiere_data,
         fisiere_initial=fisiere_data[:initial_batch_size],
@@ -1279,8 +1131,8 @@ def gallery(folder_name=None):
         subfolders=subfolders,
         breadcrumbs=breadcrumbs,
         project_root=project_root,
-        best_folder_available=best_folder_available,
-        best_folder_count=best_folder_count)
+        best_folder_available=False,
+        best_folder_count=0)
 
 @app.route('/admin/dashboard')
 def admin_dashboard():
@@ -1375,6 +1227,7 @@ def view_review_fullscreen(review_id):
         return "Error loading review", 500
 
 @app.route('/admin/login', methods=['GET', 'POST'])
+@limiter.limit("5 per minute") # Permite maxim 5 încercări de logare pe minut per IP!
 def admin_login():
     if request.method == 'POST' and request.form.get('password') == ADMIN_PASSWORD:
         session['is_admin'] = True
@@ -1419,14 +1272,7 @@ def admin_upload():
         # Generare thumbnails în background
         threading.Thread(target=generate_thumbs_for_folder, args=(target,), daemon=True).start()
 
-        # (Codul de AI a rămas la fel)
-        if gemini_model and uploaded_files:
-            def ai_worker():
-                with app.app_context():
-                    for filename, file_path in uploaded_files:
-                        title, desc, tags = generate_ai_description(file_path, detailed=False)
-                        print(f"🧠 Gemini analizat → {filename}")
-            threading.Thread(target=ai_worker, daemon=True).start()
+         
 
         flash(f"{len(uploaded_files)} fișiere încărcate cu succes.", "success")
         return redirect(url_for('gallery', folder_name=folder))
@@ -1783,31 +1629,20 @@ def serve_media():
     p = request.args.get('p', '')
     if not p:
         return "Not Found", 404
-    # === SPECIAL: static/best ===
-    if p.lower().startswith('best/') or p.lower() == 'best':
-        real_p = os.path.join(BEST_STATIC_FOLDER, p[5:] if p.lower().startswith('best/') else '')
-        real_p = os.path.join(BEST_STATIC_FOLDER, p[5:] if p.startswith('best/') else '')
-        if os.path.exists(real_p) and os.path.isfile(real_p):
-            response = send_file(real_p)
-            response.headers['Cache-Control'] = 'public, max-age=2592000, stale-while-revalidate=86400'
-            return response
-        return "Not Found", 404
 
     base = get_base_dir()
-    translated = _translate_best_path(p)
-    real_p = os.path.join(base, translated)
+    real_p = os.path.join(base, p)
 
     if not is_safe_path(base, real_p) or not os.path.exists(real_p):
-        # Fallback la local dacă nu e pe HDD
         if base != LOCAL_FOLDER:
-            local_p = os.path.join(LOCAL_FOLDER, translated)
+            local_p = os.path.join(LOCAL_FOLDER, p)
             if is_safe_path(LOCAL_FOLDER, local_p) and os.path.exists(local_p):
                 response = send_file(local_p)
                 response.headers['Cache-Control'] = 'public, max-age=2592000, stale-while-revalidate=86400'
                 return response
         return "Not Found", 404
 
-    media_folder = os.path.dirname(translated).replace('\\', '/')
+    media_folder = os.path.dirname(p).replace('\\', '/')
     if media_folder and not user_has_access(media_folder):
         return "Forbidden", 403
 
@@ -2073,50 +1908,6 @@ def download_selection():
                 zf.write(path, f)
     memory_file.seek(0)
     return send_file(memory_file, mimetype='application/zip', as_attachment=True, download_name='selectie.zip')
-
-@app.route('/api/ai-search/<path:folder_name>', methods=['GET'])
-def api_ai_search(folder_name):
-    """API pentru căutare inteligentă cu Gemini"""
-    folder_name = normalize_folder_name(folder_name)
-    if folder_name is None:
-        return jsonify({"status": "error", "message": "Invalid folder"}), 400
-
-    if not user_has_access(folder_name):
-        return jsonify({"status": "error", "message": "No access"}), 403
-
-    query = request.args.get('q', '').strip()
-
-    if not gemini_model:
-        return jsonify({"status": "error", "message": "AI search is disabled"}), 503
-
-    if not query:
-        return jsonify({"status": "error", "message": "Query required"}), 400
-
-    results = ai_smart_search(folder_name, query, max_results=24)
-
-    # Construim datele pentru frontend (ca la gallery-items)
-    base = get_base_dir()
-    target_dir = os.path.join(base, folder_name) if folder_name else base
-    path_prefix = f"{folder_name}/" if folder_name else ""
-
-    items = []
-    for f in results:
-        items.append({
-            'name': f,
-            'is_video': is_video(f),
-            'thumb': url_for('serve_thumb', p=f"{path_prefix}{f}", fmt='auto'),
-            'lqip': url_for('serve_thumb', p=f"{path_prefix}{f}", variant='lqip'),
-            'lightbox': url_for('serve_thumb', p=f"{path_prefix}{f}", variant='lightbox', fmt='auto'),
-            'media': url_for('serve_media', p=f"{path_prefix}{f}")
-        })
-
-    return jsonify({
-        'status': 'ok',
-        'query': query,
-        'total': len(items),
-        'items': items,
-        'is_ai_search': True
-    })
 
 @app.route('/logout')
 def logout():
